@@ -14,9 +14,6 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - AMapFoundation-NO-IDFA (1.5.3)
-  - AMapLocation-NO-IDFA (2.6.0):
-    - AMapFoundation-NO-IDFA (~> 1.4)
   - BMKLocationKit-NO-IDFA (1.0.1)
   - IQKeyboardManager (5.0.4)
   - JCore (1.1.6)
@@ -51,7 +48,6 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking
-  - AMapLocation-NO-IDFA
   - BMKLocationKit-NO-IDFA
   - IQKeyboardManager
   - JPush
@@ -67,8 +63,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
-    - AMapFoundation-NO-IDFA
-    - AMapLocation-NO-IDFA
     - BMKLocationKit-NO-IDFA
     - IQKeyboardManager
     - JCore
@@ -84,8 +78,6 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  AMapFoundation-NO-IDFA: 128ccf9249abc9de1661b935f01d116700583691
-  AMapLocation-NO-IDFA: a75b762ae9a90840ce683de12504ac843a9f3b6c
   BMKLocationKit-NO-IDFA: 9e39cf066c14d8e5dbbe2df0ee9714bdc48ce9c0
   IQKeyboardManager: 1df9c0f147af1681cfb2d9977bc30309d45a7e76
   JCore: 18fc8725124f26e55625eaf224659b3a999dcf63
@@ -99,6 +91,6 @@ SPEC CHECKSUMS:
   ReactiveCocoa: f89f2e009a87951b50321bf9feb958823fcc617e
   SDWebImage: 1fa4c9edf525b744f002db89f3f5a38b3cd4c541
 
-PODFILE CHECKSUM: 370632ecafeab5602626c90a1106c20446dfbe51
+PODFILE CHECKSUM: b09547da7e376e21221a71b6b035905bb641fdce
 
 COCOAPODS: 1.5.3
