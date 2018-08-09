@@ -466,10 +466,10 @@
 }
 
 - (void)updateLocationToServer:(BMKLocation *)bLocation {
-    NSLog(@"位置信息:%f,%f",bLocation.location.coordinate.latitude,bLocation.location.coordinate.longitude);
+//    NSLog(@"位置信息:%f,%f",bLocation.location.coordinate.latitude,bLocation.location.coordinate.longitude);
 //    __weak typeof(self) weakSelf = self;
     [JKHttpRequestService POST:@"appuser/location" withParameters:@{@"guide_id":[Utility getUserID],@"longitude":[NSString stringWithFormat:@"%f",bLocation.location.coordinate.longitude],@"latitude":[NSString stringWithFormat:@"%f",bLocation.location.coordinate.latitude]} success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
-        NSLog(@"jsoDic = %@",jsonDic[@"msg"]);
+//        NSLog(@"jsoDic = %@",jsonDic[@"msg"]);
 //        __strong typeof(self) strongSelf = weakSelf;
 //        if (succe) {
 //
