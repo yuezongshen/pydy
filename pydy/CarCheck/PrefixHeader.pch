@@ -1,0 +1,51 @@
+//
+//  PrefixHeader.pch
+//  OnePage
+//
+//  Created by zhangqiang on 15/11/19.
+//  Copyright © 2015年 zhangqiang. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#import "RestAPI.h"
+#import "Custom.h"
+#import "Utility.h"
+#import <MJExtension.h>
+#import "JKHttpRequestService.h"
+#import "BaseViewController.h"
+#import "MJRefresh.h"
+#import "ZQLoadingView.h"
+#import "UdStorage.h"
+
+#import "ZQParseTool.h"
+
+#ifdef DEBUG
+#define ZQLog(...) NSLog(__VA_ARGS__)
+#else
+#define ZQLog(...)
+#endif
+
+/**
+ *  屏幕宽高
+ */
+#define kDevice_Is_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
+
+#define KWidth  [UIScreen mainScreen].bounds.size.width
+#define KHeight  [UIScreen mainScreen].bounds.size.height
+
+#ifndef kScreenWidthRatio
+#define kScreenWidthRatio  (KWidth / 375.0)
+#endif
+
+#ifndef kScreenHeightRatio
+#define kScreenHeightRatio (KHeight / 667.0)
+#endif
+
+// 比例
+#define kWidthScale(value)  kScreenWidthRatio*value
+#define kHeightScale(value) \
+(KHeight<812 ? (kScreenHeightRatio*value):value)
+
+#endif /* PrefixHeader_pch */

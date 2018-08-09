@@ -1,0 +1,1 @@
+# BMKLocationKit-NO-IDFA

@@ -1,0 +1,1 @@
+../../../../BMKLocationKit-NO-IDFA/framework/BMKLocationKit.framework/Headers/BMKLocationAuth.h

@@ -1,0 +1,104 @@
+PODS:
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
+  - AMapFoundation-NO-IDFA (1.5.3)
+  - AMapLocation-NO-IDFA (2.6.0):
+    - AMapFoundation-NO-IDFA (~> 1.4)
+  - BMKLocationKit-NO-IDFA (1.0.1)
+  - IQKeyboardManager (5.0.4)
+  - JCore (1.1.6)
+  - JPush (3.0.7):
+    - JCore (~> 1.1.6)
+  - Masonry (1.1.0)
+  - MBProgressHUD (1.0.0)
+  - MJExtension (3.0.13)
+  - MJRefresh (3.1.15)
+  - MMDrawerController (0.5.7):
+    - MMDrawerController/Core (= 0.5.7)
+    - MMDrawerController/MMDrawerBarButtonItem (= 0.5.7)
+    - MMDrawerController/MMDrawerVisualStates (= 0.5.7)
+    - MMDrawerController/Subclass (= 0.5.7)
+  - MMDrawerController/Core (0.5.7)
+  - MMDrawerController/MMDrawerBarButtonItem (0.5.7):
+    - MMDrawerController/Core
+  - MMDrawerController/MMDrawerVisualStates (0.5.7):
+    - MMDrawerController/Core
+  - MMDrawerController/Subclass (0.5.7):
+    - MMDrawerController/Core
+  - PPBadgeView (2.1.0)
+  - ReactiveCocoa (2.1.8):
+    - ReactiveCocoa/Core (= 2.1.8)
+    - ReactiveCocoa/no-arc (= 2.1.8)
+  - ReactiveCocoa/Core (2.1.8):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.1.8)
+  - SDWebImage (4.2.1):
+    - SDWebImage/Core (= 4.2.1)
+  - SDWebImage/Core (4.2.1)
+
+DEPENDENCIES:
+  - AFNetworking
+  - AMapLocation-NO-IDFA
+  - BMKLocationKit-NO-IDFA
+  - IQKeyboardManager
+  - JPush
+  - Masonry
+  - MBProgressHUD
+  - MJExtension
+  - MJRefresh
+  - MMDrawerController (~> 0.5.7)
+  - PPBadgeView
+  - ReactiveCocoa (~> 2.1.8)
+  - SDWebImage
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AFNetworking
+    - AMapFoundation-NO-IDFA
+    - AMapLocation-NO-IDFA
+    - BMKLocationKit-NO-IDFA
+    - IQKeyboardManager
+    - JCore
+    - JPush
+    - Masonry
+    - MBProgressHUD
+    - MJExtension
+    - MJRefresh
+    - MMDrawerController
+    - PPBadgeView
+    - ReactiveCocoa
+    - SDWebImage
+
+SPEC CHECKSUMS:
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  AMapFoundation-NO-IDFA: 128ccf9249abc9de1661b935f01d116700583691
+  AMapLocation-NO-IDFA: a75b762ae9a90840ce683de12504ac843a9f3b6c
+  BMKLocationKit-NO-IDFA: 9e39cf066c14d8e5dbbe2df0ee9714bdc48ce9c0
+  IQKeyboardManager: 1df9c0f147af1681cfb2d9977bc30309d45a7e76
+  JCore: 18fc8725124f26e55625eaf224659b3a999dcf63
+  JPush: 111b79b8a0169ab8fd4c486dac3ed166ed69293e
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  MJExtension: 5932755f451458eefa24239358817f8d291240c7
+  MJRefresh: 9af70f5f9327a2cf87f0fb5929f35fcc2fa638ea
+  MMDrawerController: 7a4cf8e25596bf2434e03ce50d22a8608ddee6a1
+  PPBadgeView: 167006b3497ebb6222942313a6b827e79791aae6
+  ReactiveCocoa: f89f2e009a87951b50321bf9feb958823fcc617e
+  SDWebImage: 1fa4c9edf525b744f002db89f3f5a38b3cd4c541
+
+PODFILE CHECKSUM: 370632ecafeab5602626c90a1106c20446dfbe51
+
+COCOAPODS: 1.5.3

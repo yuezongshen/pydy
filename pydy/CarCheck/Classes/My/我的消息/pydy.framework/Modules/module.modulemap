@@ -1,0 +1,6 @@
+framework module pydy {
+  umbrella header "pydy.h"
+
+  export *
+  module * { export * }
+}
