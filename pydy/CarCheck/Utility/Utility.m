@@ -71,12 +71,21 @@
 {
    [Utility storageObject:pwd forKey:@"WalletPayP"];
 }
++(NSString *)getUserIDCard
+{
+    NSString *phone = [[NSUserDefaults standardUserDefaults] valueForKey:@"IDCard"];
+    if (phone.length) {
+        return phone;
+    }
+    return @"";
+}
 +(void)saveUserInfo:(NSDictionary *)dict
 {
     if ([dict isKindOfClass:[NSDictionary class]]) {
         [Utility setLoginStates:YES];
         [Utility storageObject:dict[@"mobile"] forKey:@"userPhone"];
         [Utility storageObject:[NSString stringWithFormat:@"%@",dict[@"id"]] forKey:@"userId"];
+        [Utility storageObject:[NSString stringWithFormat:@"%@",dict[@"idcard"]] forKey:@"IDCard"];
 //        NSString *headStr = dict[@"imgurl"];
 //        if ([headStr isKindOfClass:[NSString class]]) {
 //            if (headStr.length) {
@@ -467,5 +476,75 @@
         }
     }
     return @"";
+}
+//根据身份证号获取生日
++(NSString *)birthdayStrFromIdentityCard:(NSString *)numberStr
+{
+    if (!numberStr) {
+        numberStr = [Utility getUserIDCard];
+        if (numberStr.length<17) {
+            return @"1990-09-09";
+        }
+    }
+    NSMutableString *result = [NSMutableString stringWithCapacity:0];
+    NSString *year = nil;
+    NSString *month = nil;
+    
+    BOOL isAllNumber = YES;
+    NSString *day = nil;
+    if([numberStr length]<14)
+        return result;
+    
+    //**截取前14位
+    NSString *fontNumer = [numberStr substringWithRange:NSMakeRange(0, 13)];
+    
+    //**检测前14位否全都是数字;
+    const char *str = [fontNumer UTF8String];
+    const char *p = str;
+    while (*p!='\0') {
+        if(!(*p>='0'&&*p<='9'))
+            isAllNumber = NO;
+        p++;
+    }
+    if(!isAllNumber)
+        return result;
+    
+    year = [numberStr substringWithRange:NSMakeRange(6, 4)];
+    month = [numberStr substringWithRange:NSMakeRange(10, 2)];
+    day = [numberStr substringWithRange:NSMakeRange(12,2)];
+    
+    [result appendString:year];
+    [result appendString:@"年"];
+    [result appendString:month];
+    [result appendString:@"月"];
+    [result appendString:day];
+    return result;
+}
+//根据身份证号性别
++(NSString *)getIdentityCardSex:(NSString *)numberStr
+{
+    if (!numberStr) {
+        numberStr = [Utility getUserIDCard];
+        if (numberStr.length<17) {
+            return @"男";
+        }
+    }
+    int sexInt=[[numberStr substringWithRange:NSMakeRange(16,1)] intValue];
+    
+    if(sexInt%2!=0)
+    {
+        return @"男";
+    }
+    else
+    {
+        return @"女";
+    }
+}
++ (CGFloat)getCurrentYear
+{
+    NSDate *date=[NSDate date];
+    NSDateFormatter *format1=[[NSDateFormatter alloc] init];
+    [format1 setDateFormat:@"yyyy"];
+    return [[format1 stringFromDate:date] floatValue];
 }
 @end

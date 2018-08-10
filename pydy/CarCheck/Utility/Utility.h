@@ -76,6 +76,11 @@
  */
 +(NSString *)getUserPhone;
 /**
+ *  获取用户身份证号
+ *
+ */
++(NSString *)getUserIDCard;
+/**
  *  获取头像Data
  *
  */
@@ -174,4 +179,8 @@
 +(void)requestAlreadyReadWithId:(NSString *)infoId;
 + (void)speakActionWithString:(NSString *)string;
 +(NSString *)verifyActionWithString:(NSString *)str;
+
++ (NSString *)birthdayStrFromIdentityCard:(NSString *)numberStr;
++ (NSString *)getIdentityCardSex:(NSString *)numberStr;
++ (CGFloat)getCurrentYear;
 @end

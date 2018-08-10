@@ -1520,7 +1520,7 @@
 				TargetAttributes = {
 					F04ACD901F79E20B00F4C50D = {
 						CreatedOnToolsVersion = 9.0;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1906,8 +1906,8 @@
 				CODE_SIGN_ENTITLEMENTS = CarCheck/CarCheck.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9CX32JSMD5;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = WSKT7LS6EE;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1919,10 +1919,10 @@
 				INFOPLIST_FILE = CarCheck/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.FYXJ.pydy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sztd.pydy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "a82222e5-78c4-4661-97eb-0ec3c5ede7e7";
+				PROVISIONING_PROFILE_SPECIFIER = sztdDemoDevelopment;
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1937,8 +1937,8 @@
 				CODE_SIGN_ENTITLEMENTS = CarCheck/CarCheck.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9CX32JSMD5;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = WSKT7LS6EE;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1950,10 +1950,10 @@
 				INFOPLIST_FILE = CarCheck/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.FYXJ.pydy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sztd.pydy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "a82222e5-78c4-4661-97eb-0ec3c5ede7e7";
+				PROVISIONING_PROFILE_SPECIFIER = sztdDemoDevelopment;
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

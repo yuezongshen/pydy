@@ -77,17 +77,18 @@
                         _placeholderArr = @[@"未上传",@"请填写用户名",@"请填写性别(男/女)",@"请填写生日(HHHH:MM:DD格式)",@"山西省平遥古城",@"2016年5月",@"请填写联系方式",@"已上传",@"已上传"];
                     }
                 }
-                NSString *sex = dic[@"sex"];
-                if (![sex isEqualToString:@"男"]&&![sex isEqualToString:@"女"]) {
-                    if (sex.integerValue==1) {
-                        sex = @"男";
-                    }
-                    else
-                    {
-                        sex = @"女";
-                    }
-                }
-                strongSelf.contentArray = [NSMutableArray arrayWithArray:@[dic[@"certificate_img"],dic[@"name"],sex,dic[@"birthday"],dic[@"native_place"],dic[@"work_time"],dic[@"phone"],dic[@"guide_voice"],dic[@"life_img"],dic[@"autograph"]]];
+//                NSString *sex = dic[@"sex"];
+//                if (![sex isEqualToString:@"男"]&&![sex isEqualToString:@"女"]) {
+//                    if (sex.integerValue==1) {
+//                        sex = @"男";
+//                    }
+//                    else
+//                    {
+//                        sex = @"女";
+//                    }
+//                }
+//                 strongSelf.contentArray = [NSMutableArray arrayWithArray:@[dic[@"certificate_img"],dic[@"name"],sex,dic[@"birthday"],dic[@"native_place"],dic[@"work_time"],dic[@"phone"],dic[@"guide_voice"],dic[@"life_img"],dic[@"autograph"]]];
+                strongSelf.contentArray = [NSMutableArray arrayWithArray:@[dic[@"certificate_img"],dic[@"name"],[Utility getIdentityCardSex:nil],[Utility birthdayStrFromIdentityCard:nil],dic[@"native_place"],[NSString stringWithFormat:@"%.f",[Utility getCurrentYear]-[dic[@"work_time"] floatValue]],dic[@"phone"],dic[@"guide_voice"],dic[@"life_img"],dic[@"autograph"]]];
                 [strongSelf.tableView reloadData];
             }
         }
@@ -139,6 +140,31 @@
 - (void)saveInfoAction
 {
     [self.view endEditing:YES];
+    NSString *imgStr = @"";
+    if (_chooseImage) {
+      imgStr = [[self imageData:_chooseImage] base64EncodedStringWithOptions:(NSDataBase64Encoding64CharacterLineLength)];
+    }
+    [ZQLoadingView showProgressHUD:@"loading..."];
+    __weak typeof(self) weakSelf = self;
+    [JKHttpRequestService POST:@"appuser/personinfo" withParameters:@{@"guide_id":[Utility getUserID],@"autograph":_contentArray[9],@"user_header":imgStr} success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
+        [ZQLoadingView hideProgressHUD];
+        __strong typeof(self) strongSelf = weakSelf;
+        if (succe) {
+            [ZQLoadingView showAlertHUD:jsonDic[@"msg"] duration:SXLoadingTime];
+            [[NSNotificationCenter defaultCenter] postNotificationName:ZQdidLoginNotication object:nil];
+            if (strongSelf)
+            {
+                [strongSelf performSelector:@selector(backAc) withObject:nil afterDelay:SXLoadingTime];
+            }
+        }
+    } failure:^(NSError *error) {
+        [ZQLoadingView hideProgressHUD];
+        
+    } animated:NO];
+}
+- (void)oldSaveInfoAction
+{
+    [self.view endEditing:YES];
     NSString *ticketNumStr = _contentArray[1];
     if (!ticketNumStr.length) {
         [ZQLoadingView showAlertHUD:@"请输入用户名" duration:SXLoadingTime];
@@ -149,7 +175,7 @@
         [ZQLoadingView showAlertHUD:@"请输入籍贯" duration:SXLoadingTime];
         return;
     }
-   
+    
     NSString *phoneStr = _contentArray[6];
     if (phoneStr.length) {
         if (![phoneStr isValidMobilePhoneNumber]) {
@@ -164,7 +190,7 @@
     }
     NSString *imgStr = @"";
     if (_chooseImage) {
-      imgStr = [[self imageData:_chooseImage] base64EncodedStringWithOptions:(NSDataBase64Encoding64CharacterLineLength)];
+        imgStr = [[self imageData:_chooseImage] base64EncodedStringWithOptions:(NSDataBase64Encoding64CharacterLineLength)];
     }
     [ZQLoadingView showProgressHUD:@"loading..."];
     __weak typeof(self) weakSelf = self;
@@ -187,22 +213,22 @@
         [ZQLoadingView hideProgressHUD];
         
     } animated:NO];
-
-//    __weak typeof(self) weakSelf = self;
-//    [JKHttpRequestService POST:@"appuser/personinfo" Params:@{@"guide_id":@"92",@"name":ticketNumStr,@"sex":_contentArray[2],@"birthday":_contentArray[3],@"native_place":carCodeStr,@"work_time":_contentArray[5],@"phone":phoneStr,@"autograph":_contentArray[9]} NSData:[self imageData:_chooseImage] key:@"user_header" success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
-//        [ZQLoadingView hideProgressHUD];
-//        __strong typeof(self) strongSelf = weakSelf;
-//        if (succe) {
-//            [ZQLoadingView showAlertHUD:jsonDic[@"msg"] duration:SXLoadingTime];
-//            if (strongSelf)
-//            {
-//                [strongSelf performSelector:@selector(backAc) withObject:nil afterDelay:SXLoadingTime];
-//            }
-//        }
-//    } failure:^(NSError *error) {
-//        [ZQLoadingView hideProgressHUD];
-//
-//    } animated:NO];
+    
+    //    __weak typeof(self) weakSelf = self;
+    //    [JKHttpRequestService POST:@"appuser/personinfo" Params:@{@"guide_id":@"92",@"name":ticketNumStr,@"sex":_contentArray[2],@"birthday":_contentArray[3],@"native_place":carCodeStr,@"work_time":_contentArray[5],@"phone":phoneStr,@"autograph":_contentArray[9]} NSData:[self imageData:_chooseImage] key:@"user_header" success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
+    //        [ZQLoadingView hideProgressHUD];
+    //        __strong typeof(self) strongSelf = weakSelf;
+    //        if (succe) {
+    //            [ZQLoadingView showAlertHUD:jsonDic[@"msg"] duration:SXLoadingTime];
+    //            if (strongSelf)
+    //            {
+    //                [strongSelf performSelector:@selector(backAc) withObject:nil afterDelay:SXLoadingTime];
+    //            }
+    //        }
+    //    } failure:^(NSError *error) {
+    //        [ZQLoadingView hideProgressHUD];
+    //
+    //    } animated:NO];
 }
 - (void)backAc
 {
@@ -330,24 +356,25 @@
         [cell configTextFeildText:_contentArray[indexPath.row]];
         return cell;
     }
-    NSInteger showType = [self showTFCondition:indexPath];
-    if (showType) {
-        ZQPersonInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ZQPersonInfoCell"];
-        if (!cell) {
-            cell = [[ZQPersonInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ZQPersonInfoCell"];
-            cell.detailTF.delegate = self;
-        }
-        if (showType==1) {
-            [cell setTitle:_titleArray[indexPath.row] attributedString:@"*" placeholderText:_placeholderArr[indexPath.row]];
-        }
-        else
-        {
-             [cell setTitle:_titleArray[indexPath.row] placeholderText:_placeholderArr[indexPath.row]];
-        }
-        cell.detailTF.tag = indexPath.row;
-        [cell.detailTF setText:_contentArray[indexPath.row]];
-        return cell;
-    }
+//
+//    NSInteger showType = [self showTFCondition:indexPath];
+//    if (showType) {
+//        ZQPersonInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ZQPersonInfoCell"];
+//        if (!cell) {
+//            cell = [[ZQPersonInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ZQPersonInfoCell"];
+//            cell.detailTF.delegate = self;
+//        }
+//        if (showType==1) {
+//            [cell setTitle:_titleArray[indexPath.row] attributedString:@"*" placeholderText:_placeholderArr[indexPath.row]];
+//        }
+//        else
+//        {
+//             [cell setTitle:_titleArray[indexPath.row] placeholderText:_placeholderArr[indexPath.row]];
+//        }
+//        cell.detailTF.tag = indexPath.row;
+//        [cell.detailTF setText:_contentArray[indexPath.row]];
+//        return cell;
+//    }
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell_person_info"];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"cell_person_info"];
@@ -356,6 +383,7 @@
         cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.detailTextLabel.textColor = __TestGColor;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     cell.textLabel.text = _titleArray[indexPath.row];
     if (indexPath.row==0) {
@@ -395,6 +423,10 @@
     else
     {
         if ([self showContentDetail:indexPath]) {
+         cell.detailTextLabel.text = _placeholderArr[indexPath.row];
+        }
+        else
+        {
             NSString *str = _contentArray[indexPath.row];
             if ([str isKindOfClass:[NSString class]]) {
                 if (str.length) {
@@ -402,18 +434,35 @@
                 }
                 else
                 {
-                    cell.detailTextLabel.text = _placeholderArr[indexPath.row];
+                    cell.detailTextLabel.text = nil;
                 }
             }
             else
             {
-                cell.detailTextLabel.text = _placeholderArr[indexPath.row];
+                cell.detailTextLabel.text = nil;
             }
         }
-        else
-        {
-            cell.detailTextLabel.text = _placeholderArr[indexPath.row];
-        }
+
+//        if ([self showContentDetail:indexPath]) {
+//            NSString *str = _contentArray[indexPath.row];
+//            if ([str isKindOfClass:[NSString class]]) {
+//                if (str.length) {
+//                    cell.detailTextLabel.text = str;
+//                }
+//                else
+//                {
+//                    cell.detailTextLabel.text = _placeholderArr[indexPath.row];
+//                }
+//            }
+//            else
+//            {
+//                cell.detailTextLabel.text = _placeholderArr[indexPath.row];
+//            }
+//        }
+//        else
+//        {
+//            cell.detailTextLabel.text = _placeholderArr[indexPath.row];
+//        }
     }
     return cell;
 }
@@ -430,24 +479,24 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    [self hiddenView];
+//    [self hiddenView];
    
     switch (indexPath.row) {
         case 0:
         {
-            [self chooseImageAction];
+//            [self chooseImageAction];
             break;
         }
         case 2:
         {
-            [self.view endEditing:YES];
-            [self showChooseView];
+//            [self.view endEditing:YES];
+//            [self showChooseView];
         }
             break;
         case 3:
         {
-            [self.view endEditing:YES];
-            [self.view addSubview:self.datePickV];
+//            [self.view endEditing:YES];
+//            [self.view addSubview:self.datePickV];
         }
             break;
         case 7:
@@ -500,7 +549,7 @@
 //        default:
 //            break;
 //    }
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 // 样式
@@ -520,15 +569,25 @@
 }
 - (BOOL)showContentDetail:(NSIndexPath *)indexPath
 {
-    switch (indexPath.row) {
-        case 2:
-        case 3:
-            return YES;
-            break;
-            
-        default:
-            break;
-    }
+//    switch (indexPath.row) {
+//        case 2:
+//        case 3:
+//            return YES;
+//            break;
+//
+//        default:
+//            break;
+//    }
+        switch (indexPath.row) {
+            case 7:
+            case 8:
+                return YES;
+                break;
+    
+            default:
+                break;
+        }
+    
     return NO;
 }
 - (NSInteger)showTFCondition:(NSIndexPath *)indexPath
