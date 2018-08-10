@@ -189,7 +189,7 @@
 }
 - (void)locationTimerAction
 {
-    self.locationTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(requestLocation) userInfo:nil repeats:YES];
+    self.locationTimer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(requestLocation) userInfo:nil repeats:YES];
 //    [[NSRunLoop currentRunLoop] addTimer:_locationTimer forMode:NSRunLoopCommonModes];
     [[NSRunLoop currentRunLoop] run];
 }
