@@ -190,7 +190,7 @@
 - (void)locationTimerAction
 {
     self.locationTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(requestLocation) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:_locationTimer forMode:NSRunLoopCommonModes];
+//    [[NSRunLoop currentRunLoop] addTimer:_locationTimer forMode:NSRunLoopCommonModes];
     [[NSRunLoop currentRunLoop] run];
 }
 - (void)requestLocation
@@ -203,6 +203,8 @@
             }
             else
             {
+//            NSLog(@"位置信息:%f,%f",location.location.coordinate.latitude,location.location.coordinate.longitude);
+
                 __strong typeof(self) strongSelf = weakSelf;
                 [strongSelf updateLocationToServer:location];
             }
@@ -466,7 +468,6 @@
 }
 
 - (void)updateLocationToServer:(BMKLocation *)bLocation {
-//    NSLog(@"位置信息:%f,%f",bLocation.location.coordinate.latitude,bLocation.location.coordinate.longitude);
 //    __weak typeof(self) weakSelf = self;
     [JKHttpRequestService POST:@"appuser/location" withParameters:@{@"guide_id":[Utility getUserID],@"longitude":[NSString stringWithFormat:@"%f",bLocation.location.coordinate.longitude],@"latitude":[NSString stringWithFormat:@"%f",bLocation.location.coordinate.latitude]} success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
 //        NSLog(@"jsoDic = %@",jsonDic[@"msg"]);
