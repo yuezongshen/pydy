@@ -107,7 +107,7 @@
         _orderObj = orderObj;
         if (_orderObj) {
             [self.titleLabel setText:@"预约信息"];
-            [self.distanceLabel setText:[NSString stringWithFormat:@"约%@km",@"2.2"]];
+//            [self.distanceLabel setText:[NSString stringWithFormat:@"约%@km",@"2.2"]];
             [self.desLabel setText:[NSString stringWithFormat:@"距离服务开始还有%@，请及时联系游客",_orderObj.appoint_time]];
             switch ([self desLabelTextColorWithStr:_orderObj.appoint_time]) {
                 case 1:

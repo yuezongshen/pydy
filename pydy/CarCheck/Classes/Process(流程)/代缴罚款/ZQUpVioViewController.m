@@ -484,7 +484,7 @@
     switch (indexPath.row) {
         case 0:
         {
-//            [self chooseImageAction];
+            [self chooseImageAction];
             break;
         }
         case 2:
@@ -518,6 +518,10 @@
             }
             ZQUpPhotoController *upVc = [[ZQUpPhotoController alloc] initWithUrls:imageArr];
             [self.navigationController pushViewController:upVc animated:YES];
+            __weak typeof(self) weakSelf = self;
+            upVc.imgUrlsAction = ^(NSArray *imageUrls) {
+                weakSelf.contentArray[8] = imageUrls;
+            };
         }
             break;
             
