@@ -104,6 +104,20 @@
     __weak typeof(self) weakSelf = self;
     [JKHttpRequestService POST:@"Appuser/picture" Params:@{@"guide_id":[Utility getUserID]} NSArray:dataArr key:@"file" success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
         if (succe) {
+            NSArray *images = jsonDic[@"data"];
+            if ([images isKindOfClass:[NSArray class]]) {
+                if (images.count) {
+                    NSMutableArray *array = [NSMutableArray arrayWithCapacity:0];
+                    for (NSString *url in images) {
+                        if (url.length) {
+                            [array addObject:url];
+                        }
+                    }
+                    if (weakSelf.imgUrlsAction) {
+                        weakSelf.imgUrlsAction(array);
+                    }
+                }
+            }
             [ZQLoadingView showAlertHUD:jsonDic[@"msg"] duration:SXLoadingTime];
             __strong typeof(self) strongSelf = weakSelf;
             if (strongSelf)

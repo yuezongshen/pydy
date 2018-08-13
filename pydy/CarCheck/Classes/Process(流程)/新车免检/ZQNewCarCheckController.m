@@ -46,7 +46,51 @@
         self.orderNumLabel.text = [NSString stringWithFormat:@"订单编号:%@",_orderObj.order_sn];
         
         self.titleArray = @[[NSString stringWithFormat:@"距离服务开始还有%@",_orderObj.appoint_time],@"游客姓名",@"联系方式",@"景点项目",@"服务类型",@"预约时间",@"备注信息"];
-        self.contentArray = [NSMutableArray arrayWithArray: @[@"",_orderObj.name,_orderObj.guestphone,_orderObj.project,_orderObj.type,_orderObj.appointment_time,_orderObj.remarks]];
+        NSMutableArray *array = [NSMutableArray arrayWithCapacity:0];
+        [array addObject:@""];
+        if (_orderObj.name) {
+            [array addObject:_orderObj.name];
+        }
+        else
+        {
+            [array addObject:@""];
+        }
+        if (_orderObj.guestphone) {
+            [array addObject:_orderObj.guestphone];
+        }
+        else
+        {
+            [array addObject:@""];
+        }
+        if (_orderObj.project) {
+            [array addObject:_orderObj.project];
+        }
+        else
+        {
+            [array addObject:@""];
+        }
+        if (_orderObj.type) {
+            [array addObject:_orderObj.type];
+        }
+        else
+        {
+            [array addObject:@""];
+        }
+        if (_orderObj.appointment_time) {
+            [array addObject:_orderObj.appointment_time];
+        }
+        else
+        {
+            [array addObject:@""];
+        }
+        if (_orderObj.remarks) {
+            [array addObject:_orderObj.remarks];
+        }
+        else
+        {
+            [array addObject:@""];
+        }
+        self.contentArray = array;
         [self.tableView reloadData];
         switch (_orderObj.is_confirm.integerValue) {
             case 0:
@@ -57,11 +101,17 @@
                 break;
             case 1:
             {
-                self.orderStatusLabel.text = @"   进行中";
+                self.orderStatusLabel.text = @"   未服务";
                 self.timesLabel.text = @"支付时间:2018-03-01 17:22:26";
             }
                 break;
-                case 2:
+            case 2:
+            {
+                self.orderStatusLabel.text = @"   进行中";
+                self.timesLabel.text = @"支付时间:2018-03-01 17:22:26";
+                break;
+            }
+            case 3:
             {
                 self.orderStatusLabel.text = @"   已完成";
                 NSString *textStr = [NSString stringWithFormat:@"结束时间:2018-03-03 17:22:26\n接单时间:2018-03-02 17:22:26\n支付时间:2018-03-01 17:22:26"];

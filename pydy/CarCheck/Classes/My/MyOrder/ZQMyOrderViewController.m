@@ -50,8 +50,9 @@
     [super viewDidLoad];
     self.title = @"我的订单";
     _page = 1;
-    [self addSegment];
     [self.view addSubview:self.tableView];
+
+    [self addSegment];
     [self segmentAction:_currentViewType];
 }
 - (void)requestOrdersDataWithTableViewType
@@ -367,8 +368,8 @@
 - (UITableView *)tableView
 {
     if (!_tableView) {
-//        CGFloat spaceY = (kDevice_Is_iPhoneX ? 88:64);
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,CGRectGetMaxY(orderHeadView.frame), KWidth, CGRectGetHeight(self.view.frame)-CGRectGetMaxY(orderHeadView.frame)) style:(UITableViewStylePlain)];
+        CGFloat spaceY = (kDevice_Is_iPhoneX ? 88:64);
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,spaceY+36, KWidth, CGRectGetHeight(self.view.frame)-spaceY-36) style:(UITableViewStylePlain)];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.backgroundColor = MainBgColor;
