@@ -17,8 +17,8 @@
 		5EF0C53A1FE7561600577FDD /* PasswordKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF0C5381FE7561600577FDD /* PasswordKeyboard.m */; };
 		5EF0C53B1FE7561600577FDD /* PasswordKeyboard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5EF0C5391FE7561600577FDD /* PasswordKeyboard.xib */; };
 		5EF364A6205BBD0C006E791E /* VerticallyAlignedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF364A5205BBD0C006E791E /* VerticallyAlignedLabel.m */; };
+		8AA8B2BD212120E700810F07 /* pydy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA8B2BC212120E700810F07 /* pydy.framework */; };
 		8ACE465120FD910E00849465 /* BankCardSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE465020FD910E00849465 /* BankCardSearch.m */; };
-		8ADD87EA210EE5DD00DCB8CF /* pydy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADD87E9210EE5DD00DCB8CF /* pydy.framework */; };
 		A4FFE10320FC943200F51247 /* PBActivityDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4FFDF9420FC943100F51247 /* PBActivityDetailController.m */; };
 		A4FFE10420FC943200F51247 /* PBDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4FFDF9620FC943100F51247 /* PBDataViewController.m */; };
 		A4FFE10520FC943200F51247 /* PBInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4FFDF9820FC943100F51247 /* PBInfoViewController.m */; };
@@ -215,9 +215,9 @@
 		5EF364A4205BBD0C006E791E /* VerticallyAlignedLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VerticallyAlignedLabel.h; sourceTree = "<group>"; };
 		5EF364A5205BBD0C006E791E /* VerticallyAlignedLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VerticallyAlignedLabel.m; sourceTree = "<group>"; };
 		7B189598E8A45B95CB2B308C /* Pods-CarCheck.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CarCheck.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CarCheck/Pods-CarCheck.debug.xcconfig"; sourceTree = "<group>"; };
+		8AA8B2BC212120E700810F07 /* pydy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = pydy.framework; sourceTree = "<group>"; };
 		8ACE464F20FD910E00849465 /* BankCardSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankCardSearch.h; sourceTree = "<group>"; };
 		8ACE465020FD910E00849465 /* BankCardSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankCardSearch.m; sourceTree = "<group>"; };
-		8ADD87E9210EE5DD00DCB8CF /* pydy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = pydy.framework; sourceTree = "<group>"; };
 		A4FFDF9320FC943100F51247 /* PBActivityDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBActivityDetailController.h; sourceTree = "<group>"; };
 		A4FFDF9420FC943100F51247 /* PBActivityDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBActivityDetailController.m; sourceTree = "<group>"; };
 		A4FFDF9520FC943100F51247 /* PBDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBDataViewController.h; sourceTree = "<group>"; };
@@ -562,7 +562,7 @@
 			files = (
 				5E0D2607206A25C100B8B38A /* AddressBook.framework in Frameworks */,
 				DDD0C5A440E25D5F0457A6C6 /* libPods-CarCheck.a in Frameworks */,
-				8ADD87EA210EE5DD00DCB8CF /* pydy.framework in Frameworks */,
+				8AA8B2BD212120E700810F07 /* pydy.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -903,7 +903,7 @@
 		A4FFE01E20FC943100F51247 /* 我的消息 */ = {
 			isa = PBXGroup;
 			children = (
-				8ADD87E9210EE5DD00DCB8CF /* pydy.framework */,
+				8AA8B2BC212120E700810F07 /* pydy.framework */,
 				A4FFE01F20FC943100F51247 /* Models */,
 				A4FFE02820FC943100F51247 /* Views */,
 				A4FFE02D20FC943100F51247 /* ZQMessageViewController.h */,
@@ -1520,7 +1520,7 @@
 				TargetAttributes = {
 					F04ACD901F79E20B00F4C50D = {
 						CreatedOnToolsVersion = 9.0;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1906,8 +1906,8 @@
 				CODE_SIGN_ENTITLEMENTS = CarCheck/CarCheck.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = WSKT7LS6EE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9CX32JSMD5;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1919,10 +1919,10 @@
 				INFOPLIST_FILE = CarCheck/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sztd.pydy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.FYXJ.pydy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a82222e5-78c4-4661-97eb-0ec3c5ede7e7";
-				PROVISIONING_PROFILE_SPECIFIER = sztdDemoDevelopment;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1937,8 +1937,8 @@
 				CODE_SIGN_ENTITLEMENTS = CarCheck/CarCheck.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = WSKT7LS6EE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9CX32JSMD5;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1950,10 +1950,10 @@
 				INFOPLIST_FILE = CarCheck/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sztd.pydy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.FYXJ.pydy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a82222e5-78c4-4661-97eb-0ec3c5ede7e7";
-				PROVISIONING_PROFILE_SPECIFIER = sztdDemoDevelopment;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
