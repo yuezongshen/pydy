@@ -47,6 +47,10 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    UIImageView *bgImageV = [[UIImageView alloc] initWithFrame:self.navigationController.view.bounds];
+    bgImageV.image = [UIImage imageNamed:@"info_bg"];
+    [self.view addSubview:bgImageV];
+    
     self.title = @"完善个人信息";
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"上传" style:UIBarButtonItemStylePlain target:self action:@selector(uploadPicturesData)];
     self.navigationItem.rightBarButtonItem = rightBarItem;
@@ -72,7 +76,8 @@
     _collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(9, CGRectGetMaxY(_countLabel.frame)+5, CGRectGetWidth(self.view.frame)-18,CGRectGetHeight(self.view.frame)-CGRectGetHeight(_countLabel.frame)) collectionViewLayout:flowLayout];
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
-    _collectionView.backgroundColor = MainBgColor;
+//    _collectionView.backgroundColor = MainBgColor;
+    _collectionView.backgroundColor = [UIColor clearColor];
     [_collectionView registerClass:[ZQPhotoCell class] forCellWithReuseIdentifier:@"photo"];
     [_collectionView registerClass:[ZQPhotoDashCell class] forCellWithReuseIdentifier:@"ZQPhotoDashCell"];
     [self.view addSubview:_collectionView];
@@ -187,6 +192,14 @@
     if (indexPath.row==self.dataArray.count-1) {
         [self doClickAddButton:nil];
     }
+}
+- (void)collectionView:(UICollectionView *)collectionView moveItemAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    
+}
+- (BOOL)collectionView:(UICollectionView *)collectionView canMoveItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
 }
 #pragma -mark -doClickActions
 //删除按钮
@@ -379,8 +392,8 @@
         } else {
             // 照片的元数据参数
             theImage = [info objectForKey:UIImagePickerControllerOriginalImage] ;
-            
         }
+        theImage = [self thumbnailWithImage:theImage size:CGSizeMake(1360, 907)];
         [self.dataArray insertObject:theImage atIndex:0];
         
         NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -400,6 +413,81 @@
 // 相册是否可用
 - (BOOL) isPhotoLibraryAvailable{
     return [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypePhotoLibrary];
+}
+- (UIImage *)thumbnailWithImage:(UIImage *)originalImage size:(CGSize)size
+{
+    CGSize originalsize = [originalImage size];
+    //原图长宽均小于标准长宽的，不作处理返回原图
+    if (originalsize.width<size.width && originalsize.height<size.height)
+    {
+        return originalImage;
+    }
+    //原图长宽均大于标准长宽的，按比例缩小至最大适应值
+    else if(originalsize.width>size.width && originalsize.height>size.height)
+    {
+        
+        CGFloat rate = 1.0;
+        
+        CGFloat widthRate = originalsize.width/size.width;
+        
+        CGFloat heightRate = originalsize.height/size.height;
+        
+        
+        
+        rate = widthRate>heightRate?heightRate:widthRate;
+        
+        
+        
+        CGImageRef imageRef = nil;
+        
+        
+        
+        if (heightRate>widthRate)
+            
+        {
+            
+            imageRef = CGImageCreateWithImageInRect([originalImage CGImage], CGRectMake(0, originalsize.height/2-size.height*rate/2, originalsize.width, size.height*rate));//获取图片整体部分
+            
+        }
+        
+        else
+            
+        {
+            
+            imageRef = CGImageCreateWithImageInRect([originalImage CGImage], CGRectMake(originalsize.width/2-size.width*rate/2, 0, size.width*rate, originalsize.height));//获取图片整体部分
+            
+        }
+        
+        UIGraphicsBeginImageContext(size);//指定要绘画图片的大小
+        
+        CGContextRef con = UIGraphicsGetCurrentContext();
+        
+        
+        
+        CGContextTranslateCTM(con, 0.0, size.height);
+        
+        CGContextScaleCTM(con, 1.0, -1.0);
+        
+        
+        
+        CGContextDrawImage(con, CGRectMake(0, 0, size.width, size.height), imageRef);
+        
+        
+        
+        UIImage *standardImage = UIGraphicsGetImageFromCurrentImageContext();
+        
+        
+        
+        UIGraphicsEndImageContext();
+        
+        CGImageRelease(imageRef);
+        
+        
+        
+        return standardImage;
+        
+    }
+    return originalImage;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

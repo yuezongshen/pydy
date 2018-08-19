@@ -42,14 +42,14 @@
 #import "PPBadgeView.h"
 
 
-#import <BMKLocationkit/BMKLocationComponent.h>
-#import <BMKLocationKit/BMKLocationAuth.h>
+//#import <BMKLocationkit/BMKLocationComponent.h>
+//#import <BMKLocationKit/BMKLocationAuth.h>
 
-@interface ZQCarServerViewController()<UICollectionViewDelegate,UICollectionViewDataSource,BMKLocationManagerDelegate,BMKLocationAuthDelegate>{
-    BMKLocationManager *_locationManager;
+@interface ZQCarServerViewController()<UICollectionViewDelegate,UICollectionViewDataSource>{
+//    BMKLocationManager *_locationManager;
 }
 
-@property (nonatomic, strong) NSTimer *locationTimer;
+//@property (nonatomic, strong) NSTimer *locationTimer;
 
 @property (strong, nonatomic) ZQHeaderViewScoll *aheadView;
 @property (strong, nonatomic) UICollectionView *mainView;
@@ -108,10 +108,11 @@
     
     [self.bgImageV performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
     
-    [[BMKLocationAuth sharedInstance] checkPermisionWithKey:@"kFkO0joDr0ppZcBUiNdX9Fu26fmEoK7h" authDelegate:self];
+//    [[BMKLocationAuth sharedInstance] checkPermisionWithKey:@"kFkO0joDr0ppZcBUiNdX9Fu26fmEoK7h" authDelegate:self];
 
 }
 #pragma mark 初始化定位
+/*
 -(void)initLocation {
     
         if(![CLLocationManager locationServicesEnabled]){
@@ -193,6 +194,7 @@
 //    [[NSRunLoop currentRunLoop] addTimer:_locationTimer forMode:NSRunLoopCommonModes];
     [[NSRunLoop currentRunLoop] run];
 }
+
 - (void)requestLocation
 {
     if ([Utility isLogin]) {
@@ -217,6 +219,7 @@
         _locationTimer = nil;
     }
 }
+ */
 - (void)loginSuccessGetData
 {
     [self getBannerData];
@@ -326,7 +329,7 @@
         self.bottomBtn.backgroundColor = __MoneyColor;
         [self.bottomBtn setTitleColor:[UIColor whiteColor] forState:BtnNormal];
 //        [self.acceptOrderBtn setTitle:@"我要休息" forState:UIControlStateNormal];
-        [self initLocation];
+//        [self initLocation];
     }
     else
     {
@@ -334,10 +337,10 @@
         self.bottomBtn.backgroundColor = [UIColor whiteColor];
         [self.bottomBtn setTitleColor:__HeaderBgColor forState:BtnNormal];
 //        [self.acceptOrderBtn setTitle:@"我要接单" forState:UIControlStateNormal];
-        if (_locationTimer) {
-            [self.locationTimer invalidate];
-            _locationTimer = nil;
-        }
+//        if (_locationTimer) {
+//            [self.locationTimer invalidate];
+//            _locationTimer = nil;
+//        }
     }
 }
 - (void)acceptBtnAction
@@ -466,7 +469,7 @@
 {
     return CGSizeMake(__kWidth, 20);
 }
-
+/*
 - (void)updateLocationToServer:(BMKLocation *)bLocation {
 //    __weak typeof(self) weakSelf = self;
     [JKHttpRequestService POST:@"appuser/location" withParameters:@{@"guide_id":[Utility getUserID],@"longitude":[NSString stringWithFormat:@"%f",bLocation.location.coordinate.longitude],@"latitude":[NSString stringWithFormat:@"%f",bLocation.location.coordinate.latitude]} success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
@@ -479,7 +482,7 @@
         
     } animated:NO];
 }
-
+*/
 -(void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     
@@ -497,13 +500,14 @@
 {
     [self.mainView setHidden:YES];
     [self.view addSubview:self.noDataView];
-    self.noDataView.noOrderLabel.text = str;
+//    self.noDataView.noOrderLabel.text = str;
 }
 - (ZQNoDataView *)noDataView
 {
     if (!_noDataView) {
         _noDataView = [[ZQNoDataView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-        _noDataView.center = CGPointMake(self.mainView.center.x, self.mainView.center.y-50);
+        _noDataView.noOrderImgV.image = [UIImage imageNamed:@"noData_bg"];
+        _noDataView.center = self.mainView.center;
         __weak typeof(self) weakSelf = self;
         _noDataView.reloadPageAction = ^{
             __strong typeof(self) strongSelf = weakSelf;

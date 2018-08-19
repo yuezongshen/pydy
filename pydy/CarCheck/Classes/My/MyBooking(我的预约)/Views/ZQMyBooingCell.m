@@ -20,6 +20,8 @@
 @property (strong,nonatomic) UILabel *timeLabel;
 @property (strong,nonatomic) UILabel *nameLabel;
 @property (strong,nonatomic) UILabel *contactLabel;
+@property (strong,nonatomic) UILabel *orderStatusLabel;
+
 @end
 
 @implementation ZQMyBooingCell
@@ -45,6 +47,9 @@
 //        [bgView addSubview:self.distanceLabel];
         [bgView addSubview:self.desLabel];
         
+        [bgView addSubview:self.orderStatusLabel];
+         [self.orderStatusLabel setFrame:CGRectMake(CGRectGetWidth(bgView.frame)-80, 13, 110, 24)];
+        
         [bgView addSubview:self.nameLabel];
         UIView *pV = [self getPointView];
         pV.center = CGPointMake(spaceX+4, self.nameLabel.center.y+2);
@@ -57,6 +62,7 @@
         pV = [self getPointView];
         pV.center = CGPointMake(spaceX+4, self.timeLabel.center.y+2);
         [bgView addSubview:pV];
+        
         
         UIButton *actionBtn = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetWidth(bgView.frame)-spaceX-48, CGRectGetHeight(bgView.frame)-48-spaceY*2, 48, 48)];
         actionBtn .titleLabel.font = MFont(14);
@@ -72,7 +78,9 @@
     
     return self;
 }
-
+//[self.orderStatusLabel setFrame:CGRectMake(CGRectGetWidth(hView.frame)-80, 13, 110, 24)];
+//self.orderStatusLabel.layer.cornerRadius = 12;
+//self.orderStatusLabel.layer.masksToBounds = YES;
 - (void)serverActionBtn
 {
     
@@ -104,6 +112,7 @@
     [self.contactLabel setAttributedText:[self attributedWithTitle:@"联系方式:" content:orderObj.guestphone]];
     [self.timeLabel setAttributedText:[self attributedWithTitle:@"预约时间:" content:orderObj.appointment_time]];
     [self.operateBtn setHidden:NO];
+    [self.orderStatusLabel setHidden:YES];
     switch (orderObj.is_confirm.integerValue) {
         case 0:
         {
@@ -125,7 +134,19 @@
             break;
         default:
         {
+            [self.orderStatusLabel setHidden:NO];
+            [self.orderStatusLabel setText:[NSString stringWithFormat:@"   %@",orderObj.appoint_time]];
             [self.operateBtn setHidden:YES];
+             [self.desLabel setText:orderObj.appoint_time];
+            if ([orderObj.appoint_time rangeOfString:@"失效"].location == NSNotFound) {
+                _desLabel.textColor = __TestRedColor;
+                _orderStatusLabel.backgroundColor =__MoneyColor;
+            }
+            else
+            {
+                _desLabel.textColor = __DesGreenColor;
+                [self.orderStatusLabel setBackgroundColor:[UIColor lightGrayColor]];
+            }
         }
             break;
     }
@@ -216,6 +237,18 @@
     pointView.layer.cornerRadius = 2;
     pointView.layer.masksToBounds = YES;
     return pointView;
+}
+- (UILabel *)orderStatusLabel
+{
+    if (!_orderStatusLabel) {
+        _orderStatusLabel = [[UILabel alloc] init];
+        _orderStatusLabel.text = @"";
+        _orderStatusLabel.font = [UIFont systemFontOfSize:14];
+        _orderStatusLabel.textColor = [UIColor whiteColor];
+        _orderStatusLabel.layer.cornerRadius = 12;
+        _orderStatusLabel.layer.masksToBounds = YES;
+    }
+    return _orderStatusLabel;
 }
 - (UILabel *)titleLabel
 {

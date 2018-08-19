@@ -20,6 +20,8 @@
 #import "ZQMyMoneyViewController.h"
 #import "pydy/pydy.h"
 
+#import "ZQVoiceRecordController.h"
+
 static CGFloat kImageOriginHight = 200.f;
 @interface ZQNewMyViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
@@ -150,39 +152,31 @@ static CGFloat kImageOriginHight = 200.f;
 //更换头像
 - (void)headBtnAction
 {
-    if (![Utility isLogin])
-    {
-        ZQLoginViewController *loginVC = [[ZQLoginViewController alloc] init];
-        BaseNavigationController *loginNa = [[BaseNavigationController alloc] initWithRootViewController:loginVC];
-        [self.navigationController presentViewController:loginNa animated:YES completion:^{
-            
-        }];
-        return;
-    }
-//    UIAlertController *actionSheetController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-//    
-//    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        UIImagePickerController *pickerVC = [[UIImagePickerController alloc] init];
-//        pickerVC.delegate = self;
-//        pickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
-//        [self.tabBarController presentViewController:pickerVC animated:YES completion:nil];
-//    }];
-//    UIAlertAction *albumAction = [UIAlertAction actionWithTitle:@"我的相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        UIImagePickerController *pickerVC = [[UIImagePickerController alloc] init];
-//        //想要知道选择的图片
-//        pickerVC.delegate = self;
-//        //开启编辑状态
-//        pickerVC.allowsEditing = YES;
-//        [self presentViewController:pickerVC animated:YES completion:nil];
-//    }];
-//    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//        
-//    }];
-//    
-//    [actionSheetController addAction:cameraAction];
-//    [actionSheetController addAction:albumAction];
-//    [actionSheetController addAction:cancelAction];
-//    [self presentViewController:actionSheetController animated:YES completion:nil];
+
+    UIAlertController *actionSheetController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIImagePickerController *pickerVC = [[UIImagePickerController alloc] init];
+        pickerVC.delegate = self;
+        pickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:pickerVC animated:YES completion:nil];
+    }];
+    UIAlertAction *albumAction = [UIAlertAction actionWithTitle:@"我的相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIImagePickerController *pickerVC = [[UIImagePickerController alloc] init];
+        //想要知道选择的图片
+        pickerVC.delegate = self;
+        //开启编辑状态
+        pickerVC.allowsEditing = YES;
+        [self presentViewController:pickerVC animated:YES completion:nil];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [actionSheetController addAction:cameraAction];
+    [actionSheetController addAction:albumAction];
+    [actionSheetController addAction:cancelAction];
+    [self presentViewController:actionSheetController animated:YES completion:nil];
 
 }
 
@@ -415,63 +409,41 @@ UIGraphicsBeginImageContext(CGSizeMake(image.size.width*scaleSize,image.size.hei
 }
 #pragma mark - 上传头像
 -(void)saveImage:(UIImage*)headImage withName:(NSString*)imageName{
-    NSData *imageData = UIImageJPEGRepresentation(headImage, 0.5);
-//    [Utility storageObject:imageData forKey:@"UserHead"];
+//    NSData *imageData = UIImageJPEGRepresentation(headImage, 0.5);
     
-    [self modifyUserHeadimgWith:imageData];
+    [self modifyUserHeadimgWith:headImage];
 }
--(void)modifyUserHeadimgWith:(NSData *)image{
+- (NSData *)imageData:(UIImage *)myimage{
+    NSData *data=UIImageJPEGRepresentation(myimage, 1.0);
+    if (data.length>100*1024) {
+        if (data.length>1024*1024) {//1M以及以上
+            data=UIImageJPEGRepresentation(myimage, 0.1);
+            
+        }else if (data.length>512*1024) {//0.5M-1M
+            data=UIImageJPEGRepresentation(myimage, 0.5);
+            
+        }else if (data.length>200*1024) {//0.25M-0.5M
+            data=UIImageJPEGRepresentation(myimage, 0.9);
+            
+        }    }
+    return data;
     
-    //修改头像接口
-    NSString *urlStr = [NSString stringWithFormat:@"daf/update_head/u_id/%@",[Utility getUserID]];
+}
+-(void)modifyUserHeadimgWith:(UIImage *)image{
+    NSString *imgStr = [[self imageData:image] base64EncodedStringWithOptions:(NSDataBase64Encoding64CharacterLineLength)];
+    [ZQLoadingView showProgressHUD:@"loading..."];
     __weak typeof(self) weakSelf = self;
-    [JKHttpRequestService POST:urlStr Params:nil NSData:image key:@"head" success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
+    [JKHttpRequestService POST:@"appuser/personinfo" withParameters:@{@"guide_id":[Utility getUserID],@"user_header":imgStr} success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
+        [ZQLoadingView hideProgressHUD];
+        __strong typeof(self) strongSelf = weakSelf;
         if (succe) {
-            __strong typeof(self) strongSelf = weakSelf;
-            if (strongSelf)
-            {
-                NSString *headUrl = jsonDic[@"head"];
-                if ([headUrl isKindOfClass:[NSString class]]) {
-                    if (headUrl.length) {
-                        [strongSelf.headBtn sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",ImageBaseAPI,headUrl]] forState:UIControlStateNormal placeholderImage:MImage(@"user_head")];
-                        [Utility storageObject:headUrl forKey:@"userHeadUrl"];
-                        return ;
-                    }
-                }
-            }
+            [ZQLoadingView showAlertHUD:jsonDic[@"msg"] duration:SXLoadingTime];
+           [strongSelf.headBtn setBackgroundImage:image forState:UIControlStateNormal];
         }
     } failure:^(NSError *error) {
+        [ZQLoadingView hideProgressHUD];
         
-    } animated:YES];
-    //    http://b2b2c.sztd123.com/api?controller=User&method=ModifyUserHeadimg1&callback=uploadImg&common_param=%7B%22uid%22:293,%22user_headimg%22:%22upload%2Favator%2F1508737708.jpg%22%7D
-    
-//    NSData *data =UIImageJPEGRepresentation(image, 0.3);
-//    NSString *imgStr = [data base64EncodedStringWithOptions:(NSDataBase64Encoding64CharacterLineLength)];
-//    NSString *userId = [UdStorage getObjectforKey:Userid];
-//    //    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-//    //    [dict setObject:userId forKey:@"uid"];
-//    //    [dict setObject:image forKey:@"user_headimg"];
-//    //    NSString *common_param = [YSParseTool jsonDict:dict];
-//    
-//    NSString *controller = @"User";
-//    NSString *method = @"ModifyUserHeadimg";
-//    NSMutableDictionary *param = [NSMutableDictionary dictionary];
-//    [param setObject:controller forKey:@"controller"];
-//    [param setObject:method forKey:@"method"];
-//    //    [param setObject:common_param forKey:@"common_param"];
-//    
-//    NSString *str1 = [NSString stringWithFormat:@"{\"uid\":%@,\"user_headimg\":%@}",userId,imgStr];
-//    
-//    [param setValue:str1 forKey:@"common_param"];
-//    
-//    [JKHttpRequestService POST:@"?" withParameters:param success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
-//        if (succe) {
-//            [ZQLoadingView showAlertHUD:@"头像修改成功" duration:1.5];
-//            [[NSNotificationCenter defaultCenter]postNotificationName:@"modifyUserHeadimgNoti" object:nil];
-//        }
-//    } failure:^(NSError *error) {
-//        NSLog(@"%@",error);
-//    }];
+    } animated:NO];
 }
 - (UITableView *)tableView
 {
@@ -635,7 +607,27 @@ UIGraphicsBeginImageContext(CGSizeMake(image.size.width*scaleSize,image.size.hei
             }
         }
     }
-  [ZQLoadingView showAlertHUD:@"暂没有语音" duration:SXLoadingTime];
+    else
+    {
+        [self uploadVoiceData];
+    }
+//  [ZQLoadingView showAlertHUD:@"请到完善信息页面上传录音" duration:SXLoadingTime];
+}
+
+- (void)uploadVoiceData
+{
+    ZQVoiceRecordController *test = [[ZQVoiceRecordController alloc] init];
+    __weak typeof(self) weakSelf = self;
+    
+    test.updateRecordUrl = ^(NSString *urlStr) {
+        __strong typeof(self) strongSelf = weakSelf;
+//        ZQNewMyViewController *newMyVc = (ZQNewMyViewController *)strongSelf.mm_drawerController.leftDrawerViewController;
+        [strongSelf changeAudioUrl:urlStr];
+    };
+    self.definesPresentationContext = YES;
+    test.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.4];
+    test.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    [self.mm_drawerController presentViewController:test animated:NO completion:nil];
 }
 - (void)changeAudioUrl:(NSString *)urlStr
 {

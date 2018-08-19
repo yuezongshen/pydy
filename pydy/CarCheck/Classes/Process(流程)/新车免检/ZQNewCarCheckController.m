@@ -42,10 +42,11 @@
     if (_orderObj != orderObj) {
         _orderObj = orderObj;
         [self initViews];
-        self.moneyLabel.text = @"80元";
+        self.moneyLabel.text = orderObj.price;
         self.orderNumLabel.text = [NSString stringWithFormat:@"订单编号:%@",_orderObj.order_sn];
         
         self.titleArray = @[[NSString stringWithFormat:@"距离服务开始还有%@",_orderObj.appoint_time],@"游客姓名",@"联系方式",@"景点项目",@"服务类型",@"预约时间",@"备注信息"];
+
         NSMutableArray *array = [NSMutableArray arrayWithCapacity:0];
         [array addObject:@""];
         if (_orderObj.name) {
@@ -96,30 +97,36 @@
             case 0:
                 {
                     self.orderStatusLabel.text = @"   待确认";
-                    self.timesLabel.text = @"支付时间:2018-03-01 17:22:26";
+//                    self.timesLabel.text = @"支付时间:2018-03-01 17:22:26";
+                    self.timesLabel.text = [NSString stringWithFormat:@"支付时间:%@",orderObj.pay_time];
                 }
                 break;
             case 1:
             {
                 self.orderStatusLabel.text = @"   未服务";
-                self.timesLabel.text = @"支付时间:2018-03-01 17:22:26";
+//                self.timesLabel.text = @"支付时间:2018-03-01 17:22:26";
+                self.timesLabel.text = [NSString stringWithFormat:@"支付时间:%@",orderObj.pay_time];
             }
                 break;
             case 2:
             {
                 self.orderStatusLabel.text = @"   进行中";
-                self.timesLabel.text = @"支付时间:2018-03-01 17:22:26";
+//                self.timesLabel.text = @"支付时间:2018-03-01 17:22:26";
+                self.timesLabel.text = [NSString stringWithFormat:@"支付时间:%@",orderObj.pay_time];
                 break;
             }
             case 3:
             {
-                self.orderStatusLabel.text = @"   已完成";
-                NSString *textStr = [NSString stringWithFormat:@"结束时间:2018-03-03 17:22:26\n接单时间:2018-03-02 17:22:26\n支付时间:2018-03-01 17:22:26"];
+//                self.orderStatusLabel.text = @"   已完成";
+                self.orderStatusLabel.text = [NSString stringWithFormat:@"   %@",_orderObj.appoint_time];
+//                NSString *textStr = [NSString stringWithFormat:@"结束时间:2018-03-03 17:22:26\n接单时间:2018-03-02 17:22:26\n支付时间:2018-03-01 17:22:26"];
+                NSString *textStr = [NSString stringWithFormat:@"结束时间:%@\n接单时间:%@\n支付时间:%@",orderObj.end_time,orderObj.start_time,orderObj.pay_time];
                 NSMutableAttributedString * attributedString1 = [[NSMutableAttributedString alloc] initWithString:textStr];
                 NSMutableParagraphStyle * paragraphStyle1 = [[NSMutableParagraphStyle alloc] init];
                 [paragraphStyle1 setLineSpacing:6];
                 [attributedString1 addAttribute:NSParagraphStyleAttributeName value:paragraphStyle1 range:NSMakeRange(0, [textStr length])];
                 [self.timesLabel setAttributedText:attributedString1];
+                 self.titleArray = @[_orderObj.appoint_time,@"游客姓名",@"联系方式",@"景点项目",@"服务类型",@"预约时间",@"备注信息"];
                 break;
             }
             default:
@@ -201,7 +208,7 @@
     [hView addSubview:self.orderNumLabel];
     [self.orderNumLabel setFrame:CGRectMake(10, 0, 260, CGRectGetHeight(hView.frame))];
     [hView addSubview:self.orderStatusLabel];
-    [self.orderStatusLabel setFrame:CGRectMake(CGRectGetWidth(hView.frame)-60, 13, 110, 24)];
+    [self.orderStatusLabel setFrame:CGRectMake(CGRectGetWidth(hView.frame)-80, 13, 110, 24)];
     self.orderStatusLabel.layer.cornerRadius = 12;
     self.orderStatusLabel.layer.masksToBounds = YES;
 

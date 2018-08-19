@@ -13,8 +13,8 @@
 -(instancetype)initWithFrame:(CGRect)frame{
     
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = MainBgColor;
-//        self.backgroundColor = [UIColor redColor];
+//        self.backgroundColor = MainBgColor;
+        self.backgroundColor = [UIColor clearColor];
         CGFloat space = 10;
         UIImageView *bottomV = [[UIImageView alloc] initWithFrame:CGRectMake(space, space,CGRectGetWidth(frame)-space*2, CGRectGetHeight(frame)-space*2)];
         bottomV.contentMode = UIViewContentModeScaleAspectFill;

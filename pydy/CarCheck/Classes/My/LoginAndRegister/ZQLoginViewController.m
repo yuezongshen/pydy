@@ -49,8 +49,8 @@
     UIImageView *bgImageV = [[UIImageView alloc] initWithFrame:self.view.bounds];
     bgImageV.image = [UIImage imageNamed:@"info_bg"];
     [self.view addSubview:bgImageV];
-    _name = @"18810555989";
-    _passWord = @"123456";
+//    _name = @"18810555989";
+//    _passWord = @"123456";
     [self initView];
 }
 
@@ -101,13 +101,12 @@
             if (_name.length) {
              [inputTF setText:_name];
             }
-            else
-            [inputTF setText:@"18810555989"];
+//            else
+//            [inputTF setText:@"18810555989"];
         }else{
             headIV.frame = CGRectMake(15, 11, 18, 24);
             inputTF.placeholder = @"输入密码";
             inputTF.secureTextEntry = YES;
-            [inputTF setText:@"123456"];
         }
     }
     

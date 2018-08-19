@@ -13,8 +13,8 @@
 -(instancetype)initWithFrame:(CGRect)frame{
     
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = MainBgColor;
-//        self.contentView.backgroundColor = [UIColor redColor];
+//        self.backgroundColor = MainBgColor;
+        self.backgroundColor = [UIColor clearColor];
         UIImageView *bottomV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"upload_icon"]];
         bottomV.center = CGPointMake(CGRectGetWidth(frame)/2, CGRectGetHeight(frame)/2-5);
         [self.contentView addSubview:bottomV];
@@ -23,7 +23,8 @@
         label.center = CGPointMake(CGRectGetWidth(frame)/2, CGRectGetHeight(frame)/2+22);
         label.textAlignment = NSTextAlignmentCenter;
         label.font = [UIFont systemFontOfSize:12];
-        label.textColor = __TestGColor;
+//        label.textColor = __TestGColor;
+        label.textColor = [UIColor whiteColor];
         label.text = @"0/12";
         [self.contentView addSubview:label];
         self.numLabel = label;
@@ -39,7 +40,8 @@
     
     
     CGRect aRect= CGRectMake(10, 10,self.bounds.size.width-10*2,self.bounds.size.height-10*2);
-    CGContextSetRGBStrokeColor(context, 68.0/255.0, 68.0/255.0, 68.0/255.0, 1.0);
+//    CGContextSetRGBStrokeColor(context, 68.0/255.0, 68.0/255.0, 68.0/255.0, 1.0);
+    CGContextSetRGBStrokeColor(context, 1, 1, 1, 1.0);
     CGContextSetLineDash(context, 0, lengths, 4);
     CGContextSetLineWidth(context, 1.0);
     CGContextAddRect(context, aRect);

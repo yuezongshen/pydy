@@ -12,6 +12,7 @@
 		5E55F8281FCD413D00302EC9 /* ZQParseTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E55F8271FCD413D00302EC9 /* ZQParseTool.m */; };
 		5E5F4B28206DE09300ECE9C1 /* UIImage+Blur.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5F4B27206DE09300ECE9C1 /* UIImage+Blur.m */; };
 		5E8AFAC01FB930C7002A9CF6 /* ZQJkPushTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8AFABF1FB930C7002A9CF6 /* ZQJkPushTool.m */; };
+		5E8C0F952129408B00EF366B /* ZQLocationServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8C0F942129408B00EF366B /* ZQLocationServer.m */; };
 		5EC147911FD4E4D900DB9434 /* SpeechSynthesizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC147901FD4E4D900DB9434 /* SpeechSynthesizer.m */; };
 		5EF0A5DF1FE7DF4A00C29A0F /* NSString+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF0A5DE1FE7DF4A00C29A0F /* NSString+Validation.m */; };
 		5EF0C53A1FE7561600577FDD /* PasswordKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF0C5381FE7561600577FDD /* PasswordKeyboard.m */; };
@@ -205,6 +206,8 @@
 		5E8AFABE1FB930C7002A9CF6 /* ZQJkPushTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZQJkPushTool.h; sourceTree = "<group>"; };
 		5E8AFABF1FB930C7002A9CF6 /* ZQJkPushTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZQJkPushTool.m; sourceTree = "<group>"; };
 		5E8AFAC21FB948E7002A9CF6 /* CarCheck.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CarCheck.entitlements; sourceTree = "<group>"; };
+		5E8C0F932129408B00EF366B /* ZQLocationServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZQLocationServer.h; sourceTree = "<group>"; };
+		5E8C0F942129408B00EF366B /* ZQLocationServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZQLocationServer.m; sourceTree = "<group>"; };
 		5EC1478F1FD4E4D900DB9434 /* SpeechSynthesizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpeechSynthesizer.h; sourceTree = "<group>"; };
 		5EC147901FD4E4D900DB9434 /* SpeechSynthesizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpeechSynthesizer.m; sourceTree = "<group>"; };
 		5EF0A5DD1FE7DF4A00C29A0F /* NSString+Validation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Validation.h"; sourceTree = "<group>"; };
@@ -1188,6 +1191,8 @@
 				A4FFE0EF20FC943200F51247 /* Views */,
 				A4FFE0FE20FC943200F51247 /* ZQCarServerViewController.h */,
 				A4FFE0FF20FC943200F51247 /* ZQCarServerViewController.m */,
+				5E8C0F932129408B00EF366B /* ZQLocationServer.h */,
+				5E8C0F942129408B00EF366B /* ZQLocationServer.m */,
 			);
 			path = "Service(服务)";
 			sourceTree = "<group>";
@@ -1520,7 +1525,7 @@
 				TargetAttributes = {
 					F04ACD901F79E20B00F4C50D = {
 						CreatedOnToolsVersion = 9.0;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1748,6 +1753,7 @@
 				A4FFE19820FC943200F51247 /* ZQSubTimeViewController.m in Sources */,
 				A4FFE13220FC943200F51247 /* ZQVIPContentCell.m in Sources */,
 				A4FFE17C20FC943200F51247 /* ZQInspectionListController.m in Sources */,
+				5E8C0F952129408B00EF366B /* ZQLocationServer.m in Sources */,
 				A4FFE19220FC943200F51247 /* ZQProCityView.m in Sources */,
 				A4FFE18B20FC943200F51247 /* PBPlayViewController.m in Sources */,
 				A4FFE10820FC943200F51247 /* PieCharModel.m in Sources */,
@@ -1906,8 +1912,8 @@
 				CODE_SIGN_ENTITLEMENTS = CarCheck/CarCheck.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9CX32JSMD5;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = WSKT7LS6EE;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1919,10 +1925,10 @@
 				INFOPLIST_FILE = CarCheck/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.FYXJ.pydy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sztd.pydy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "a82222e5-78c4-4661-97eb-0ec3c5ede7e7";
+				PROVISIONING_PROFILE_SPECIFIER = sztdDemoDevelopment;
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1937,8 +1943,8 @@
 				CODE_SIGN_ENTITLEMENTS = CarCheck/CarCheck.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9CX32JSMD5;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = WSKT7LS6EE;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1950,10 +1956,10 @@
 				INFOPLIST_FILE = CarCheck/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.FYXJ.pydy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sztd.pydy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "a82222e5-78c4-4661-97eb-0ec3c5ede7e7";
+				PROVISIONING_PROFILE_SPECIFIER = sztdDemoDevelopment;
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

@@ -18,12 +18,18 @@
 
 #import "ZQOrderObject.h"
 
+#import "ZQLocationServer.h"
+
 @interface ZQMyOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     ZQOrderTypeChooseView *orderHeadView;
     
     NSInteger seletedIndex;
+    NSInteger orderStatus;
+//    BMKLocationManager *_locationManager;
 }
+//@property (nonatomic, strong) NSTimer *locationTimer;
+
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataArr;
 
@@ -51,10 +57,16 @@
     self.title = @"我的订单";
     _page = 1;
     [self.view addSubview:self.tableView];
-
+  
     [self addSegment];
     [self segmentAction:_currentViewType];
+    
+    __weak __typeof(self) weakSelf = self;
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [weakSelf segmentAction:weakSelf.currentViewType];
+    }];
 }
+
 - (void)requestOrdersDataWithTableViewType
 {
     orderHeadView.userInteractionEnabled = YES;
@@ -64,7 +76,7 @@
         confirm = 3;
     }
     __weak typeof(self) weakSelf = self;
-    [JKHttpRequestService POST:@"Appuser/order" withParameters:@{@"is_confirm":[NSString stringWithFormat:@"%ld",(long)confirm],@"guide_id":[Utility getUserID]} success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
+    [JKHttpRequestService POST:@"Appuser/order" withParameters:@{@"is_confirm":[NSString stringWithFormat:@"%ld",(long)confirm],@"guide_id":[Utility getUserID],@"page":[NSString stringWithFormat:@"%ld",(long)_page]} success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
         __strong typeof(self) strongSelf = weakSelf;
         if (succe) {
             if (strongSelf)
@@ -72,6 +84,13 @@
                 NSArray *array = jsonDic[@"data"];
                 if ([array isKindOfClass:[NSArray class]]) {
                     [strongSelf configDataWithArray:array];
+                    if (array.count<5) {
+                        [strongSelf configMJ_footer:YES];
+                    }
+                    else
+                    {
+                        [strongSelf configMJ_footer:NO];
+                    }
                 }
             }
         }
@@ -82,15 +101,101 @@
                 [strongSelf configDataWithArray:@[]];
             }
         }
+        [strongSelf.tableView.mj_header endRefreshing];
     } failure:^(NSError *error) {
         __strong typeof(self) strongSelf = weakSelf;
         if (strongSelf)
         {
             [strongSelf configDataWithArray:@[]];
         }
+        [strongSelf.tableView.mj_header endRefreshing];
+        if (strongSelf.tableView.mj_footer) {
+            [strongSelf.tableView.mj_footer endRefreshing];
+        }
     } animated:YES];
 }
 
+- (void)loadMoreData
+{
+    self.page++;
+    //        状态导游是否确认 0 是待确认 1是进行中 2完成
+    NSInteger confirm = _currentViewType;
+    if (confirm == 2) {
+        confirm = 3;
+    }
+    __weak typeof(self) weakSelf = self;
+    [JKHttpRequestService POST:@"Appuser/order" withParameters:@{@"is_confirm":[NSString stringWithFormat:@"%ld",(long)confirm],@"guide_id":[Utility getUserID],@"page":[NSString stringWithFormat:@"%ld",(long)_page]} success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
+        __strong typeof(self) strongSelf = weakSelf;
+        if (succe) {
+            if (strongSelf)
+            {
+                NSArray *array = jsonDic[@"data"];
+                if ([array isKindOfClass:[NSArray class]]) {
+                    [strongSelf.tableView.mj_footer endRefreshing];
+                    [strongSelf configMoreDataWithArray:array];
+                    if (array.count<5) {
+                        [strongSelf configMJ_footer:YES];
+                    }
+                    else
+                    {
+                      [strongSelf configMJ_footer:NO];
+                    }
+                    return ;
+                }
+            }
+        }
+        if (strongSelf.tableView.mj_footer) {
+            [strongSelf.tableView.mj_footer endRefreshing];
+        }
+    } failure:^(NSError *error) {
+        __strong typeof(self) strongSelf = weakSelf;
+        if (strongSelf.tableView.mj_footer) {
+            [strongSelf.tableView.mj_footer endRefreshing];
+        }
+    } animated:YES];
+}
+- (void)configMJ_footer:(BOOL)show
+{
+    if (show) {
+        self.tableView.mj_footer = nil;
+    }
+    else
+    {
+        if (!self.tableView.mj_footer) {
+            __weak typeof(self) weakSelf = self;
+            self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+                [weakSelf loadMoreData];
+            }];
+        }
+    }
+}
+- (void)configMoreDataWithArray:(NSArray *)array
+{
+    switch (_currentViewType) {
+        case ZQInProcessOrdersView:
+        {
+            [self.inProcessList addObjectsFromArray:[ZQOrderObject mj_objectArrayWithKeyValuesArray:array]];
+            [self reloadMoreDataWithArray:_inProcessList];
+          
+
+        }
+            break;
+        case ZQSucessOrdersView:
+        {
+            [self.successList addObjectsFromArray:[ZQOrderObject mj_objectArrayWithKeyValuesArray:array]];
+            [self reloadMoreDataWithArray:_successList];
+        }
+            break;
+        case ZQToBeConfirmView:
+        {
+            [self.allOrdersList addObjectsFromArray:[ZQOrderObject mj_objectArrayWithKeyValuesArray:array]];
+            [self reloadMoreDataWithArray:_allOrdersList];
+        }
+            break;
+        default:
+            break;
+    }
+}
 - (void)configDataWithArray:(NSArray *)array
 {
     switch (_currentViewType) {
@@ -215,14 +320,22 @@
             break;
     }
 }
+- (void)reloadMoreDataWithArray:(NSMutableArray *)mArray
+{
+    self.dataArr = mArray;
+    [self.tableView reloadData];
+}
 - (void)reloadDataWithArray:(NSMutableArray *)mArray
 {
-    [self.noDataView removeFromSuperview];
-    self.noDataView = nil;
+    if (self.noDataView) {
+        [self.noDataView removeFromSuperview];
+        self.noDataView = nil;
+    }
     [self.tableView setHidden:NO];
     self.dataArr = mArray;
     [self.tableView reloadData];
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    [self.tableView.mj_header endRefreshing];
 
 //    [self performSelector:@selector(scrollToTopAction) withObject:nil afterDelay:1.0];
 }
@@ -272,28 +385,50 @@
 
 - (void)operateBtnAction:(UIButton *)sender
 {
+    orderStatus = self.currentViewType+1;
+    if ([sender.titleLabel.text rangeOfString:@"结束"].location != NSNotFound) {
+        orderStatus = 3;
+    }
     ZQOrderObject *model = self.dataArr[sender.tag];
+    [ZQLocationServer shareInstance].orderNo = model.order_sn;
     __weak typeof(self) weakSelf = self;
 //    1 是确认接单 2开始服务 3完成服务
-    [JKHttpRequestService POST:@"Appuser/startServers" withParameters:@{@"id":model.ID,@"user_id":[Utility getUserID],@"istype":[NSString stringWithFormat:@"%u",self.currentViewType+1]} success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
+    [JKHttpRequestService POST:@"Appuser/startServers" withParameters:@{@"id":model.ID,@"user_id":[Utility getUserID],@"istype":[NSString stringWithFormat:@"%ld",(long)orderStatus]} success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
         __strong typeof(self) strongSelf = weakSelf;
         if (succe) {
             [ZQLoadingView showAlertHUD:jsonDic[@"msg"] duration:SXLoadingTime];
             [strongSelf deleteCellWithIndex:sender.tag];
+            [strongSelf startOrStopLoaction];
         }
     } failure:^(NSError *error) {
         
     } animated:YES];
 
 }
+- (void)startOrStopLoaction
+{
+    if (orderStatus==2) {
+        [[ZQLocationServer shareInstance] starLoction];
+    }
+    if (orderStatus==3) {
+      [[ZQLocationServer shareInstance] stopLoction];
+    }
+}
 - (void)deleteCellWithIndex:(NSInteger)index
 {
     switch (self.currentViewType) {
         case ZQInProcessOrdersView:
         {
-            [self.inProcessList removeObjectAtIndex:index];
-            [self deleteReloadArray:_inProcessList noDataStr:@"您暂时还无进行中的订单" rowIndex:index];
-            [self.successList removeAllObjects];
+            if (orderStatus==3) {
+                [self.inProcessList removeObjectAtIndex:index];
+                [self deleteReloadArray:_inProcessList noDataStr:@"您暂时还无进行中的订单" rowIndex:index];
+                [self.successList removeAllObjects];
+            }
+            else
+            {
+                [self.inProcessList removeAllObjects];
+                [self segmentAction:_currentViewType];
+            }
         }
             break;
         case ZQSucessOrdersView:
@@ -329,13 +464,13 @@
         }
     }
     self.dataArr = mArray;
-    if (self.dataArr.count) {
-        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-    }
-    else
-    {
+//    if (self.dataArr.count) {
+//        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+//    }
+//    else
+//    {
         [self.tableView reloadData];
-    }
+//    }
 }
 //删除订单
 - (void)endorseBtnAction:(UIButton *)sender
@@ -360,9 +495,9 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    if (self.dataArr.count) {
-         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:seletedIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-    }
+//    if (self.dataArr.count) {
+//         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:seletedIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//    }
 }
 
 - (UITableView *)tableView
@@ -390,7 +525,10 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (void)dealloc
+{
+    NSLog(@"订单列表页面销毁");
+}
 /*
 #pragma mark - Navigation
 

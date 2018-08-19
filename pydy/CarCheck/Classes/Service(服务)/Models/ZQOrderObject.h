@@ -24,5 +24,8 @@
 @property (nonatomic, copy) NSString *project;
 @property (nonatomic, copy) NSString *type;
 @property (nonatomic, copy) NSString *WeChat;
-
+@property (nonatomic, copy) NSString *price;
+@property (nonatomic, copy) NSString *end_time;
+@property (nonatomic, copy) NSString *start_time;
+@property (nonatomic, copy) NSString *pay_time;
 @end

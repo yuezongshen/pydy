@@ -24,7 +24,7 @@
 - (UIImageView *)noOrderImgV
 {
     if (!_noOrderImgV) {
-        _noOrderImgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+        _noOrderImgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
         [_noOrderImgV setCenter: self.center];
         _noOrderImgV.contentMode = UIViewContentModeScaleAspectFit;
     }

@@ -147,15 +147,18 @@
     [ZQLoadingView showProgressHUD:@"loading..."];
     __weak typeof(self) weakSelf = self;
     [JKHttpRequestService POST:@"appuser/personinfo" withParameters:@{@"guide_id":[Utility getUserID],@"autograph":_contentArray[9],@"user_header":imgStr} success:^(id responseObject, BOOL succe, NSDictionary *jsonDic) {
-        [ZQLoadingView hideProgressHUD];
+        
         __strong typeof(self) strongSelf = weakSelf;
         if (succe) {
             [ZQLoadingView showAlertHUD:jsonDic[@"msg"] duration:SXLoadingTime];
-            [[NSNotificationCenter defaultCenter] postNotificationName:ZQdidLoginNotication object:nil];
             if (strongSelf)
             {
                 [strongSelf performSelector:@selector(backAc) withObject:nil afterDelay:SXLoadingTime];
             }
+        }
+        else
+        {
+            [ZQLoadingView hideProgressHUD];
         }
     } failure:^(NSError *error) {
         [ZQLoadingView hideProgressHUD];
@@ -233,6 +236,7 @@
 - (void)backAc
 {
     [self.navigationController popViewControllerAnimated:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:ZQdidLoginNotication object:nil];
 }
 #pragma mark ==YBuyingDatePickerDelegate==
 -(void)chooseDateTime:(NSString *)sender{
