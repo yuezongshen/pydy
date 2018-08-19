@@ -59,7 +59,7 @@
     _countLabel.text = @"   上传图片";
     _countLabel.font = [UIFont systemFontOfSize:16];
     _countLabel.textColor = __MoneyColor;
-    _countLabel.backgroundColor = __HeaderBgColor;
+    _countLabel.backgroundColor = [UIColor colorWithRed:((float)((0x2d2f36 & 0xFF0000) >> 16))/255.0 green:((float)((0x2d2f36 & 0xFF00) >> 8))/255.0 blue:((float)(0x2d2f36 & 0xFF))/255.0 alpha:.5];
     [self.view addSubview:_countLabel];
     //其布局很有意思，当你的cell设置大小后，一行多少个cell，由cell的宽度决定
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
@@ -170,8 +170,8 @@
     [cell.deleteBtn addTarget:self action:@selector(doClickDeleteButton:) forControlEvents:UIControlEventTouchUpInside];
     
     // 长按删除
-    //    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc ] initWithTarget:self action:@selector(longPressedAction)];
-    //    [cell.contentView addGestureRecognizer:longPress];
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc ] initWithTarget:self action:@selector(longPressedAction:)];
+        [cell.contentView addGestureRecognizer:longPress];
     return cell;
 }
 //这个是两行cell之间的间距（上下行cell的间距）
@@ -193,9 +193,22 @@
         [self doClickAddButton:nil];
     }
 }
+- (NSIndexPath *)collectionView:(UICollectionView *)collectionView targetIndexPathForMoveFromItemAtIndexPath:(NSIndexPath *)originalIndexPath toProposedIndexPath:(NSIndexPath *)proposedIndexPath {
+    if (proposedIndexPath.item == (self.dataArray.count - 1)) {
+        return originalIndexPath;
+    } else {
+        if (originalIndexPath.item == (self.dataArray.count - 1)) {
+            return originalIndexPath;
+        }
+        return proposedIndexPath;
+    }
+}
 - (void)collectionView:(UICollectionView *)collectionView moveItemAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-    
+    id object= self.dataArray[sourceIndexPath.item];
+    [self.dataArray removeObjectAtIndex:sourceIndexPath.item];
+    [self.dataArray insertObject:object atIndex:destinationIndexPath.item];
+
 }
 - (BOOL)collectionView:(UICollectionView *)collectionView canMoveItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -291,23 +304,63 @@
     NSLog(@"---add--dataArray---%@",self.dataArray);
 }
 //长按删除
--(void)longPressedAction
+-(void)longPressedAction:(UILongPressGestureRecognizer *)longPress
 {
     NSLog(@"-----longPressedAction-------");
     
-    wobble = YES;
-    NSArray *array =  [_collectionView subviews];
-    
-    for (int i = 0; i < array.count; i ++) {
-        if ([array[i] isKindOfClass:[ZQPhotoCell class]]) {
-            ZQPhotoCell *cell = array[i];
-            cell.deleteBtn.hidden = YES;
-            cell.photoImage.image = [UIImage imageNamed:@"ensure"];
-            cell.tag = 999999;
-            // 晃动动画
-            [self animationViewCell:cell];
-        }
+    //获取点击在collectionView的坐标
+    CGPoint point=[longPress locationInView:self.collectionView];
+    //从长按开始
+    if (longPress.state == UIGestureRecognizerStateBegan) {
+        
+        NSIndexPath *indexPath=[self.collectionView indexPathForItemAtPoint:point];
+        [self.collectionView beginInteractiveMovementForItemAtIndexPath:indexPath];
+        //长按手势状态改变
+    } else if(longPress.state==UIGestureRecognizerStateChanged) {
+        [self.collectionView updateInteractiveMovementTargetPosition:point];
+        //长按手势结束
+    } else if (longPress.state==UIGestureRecognizerStateEnded) {
+        
+        [self.collectionView endInteractiveMovement];
+        
+        //其他情况
+    } else {
+        [self.collectionView cancelInteractiveMovement];
     }
+
+    
+//    if (longGes.state == UIGestureRecognizerStateBegan) {
+//        NSIndexPath *selectPath = [self.collectionView indexPathForItemAtPoint:[longGes locationInView:longGes.view]];
+////        ZQPhotoCell *cell = (ZQPhotoCell *)[self.collectionView cellForItemAtIndexPath:selectPath];
+////        cell.deleteBtn.hidden = NO;
+////        [cell.deleteBtn addTarget:self action:@selector(deleteItemAction:) forControlEvents:UIControlEventTouchUpInside];
+////        cell.deleteBtn.tag = selectPath.item;
+//        [self.collectionView beginInteractiveMovementForItemAtIndexPath:selectPath];
+//    }else if (longGes.state == UIGestureRecognizerStateChanged) {
+//        [self.collectionView updateInteractiveMovementTargetPosition:[longGes locationInView:longGes.view]];
+//    }else if (longGes.state == UIGestureRecognizerStateEnded) {
+//        [self.collectionView endInteractiveMovement];
+//    }else {
+//        [self.collectionView cancelInteractiveMovement];
+//    }
+    
+    
+    
+    
+    
+//    wobble = YES;
+//    NSArray *array =  [_collectionView subviews];
+//
+//    for (int i = 0; i < array.count; i ++) {
+//        if ([array[i] isKindOfClass:[ZQPhotoCell class]]) {
+//            ZQPhotoCell *cell = array[i];
+//            cell.deleteBtn.hidden = YES;
+//            cell.photoImage.image = [UIImage imageNamed:@"ensure"];
+//            cell.tag = 999999;
+//            // 晃动动画
+//            [self animationViewCell:cell];
+//        }
+//    }
 }
 // 取消晃动
 -(void)cancelWobble
