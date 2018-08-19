@@ -8,7 +8,7 @@
 
 #import "BaseViewController.h"
 
-typedef void(^imageUrslAction)(NSArray *imageUrls);
+typedef void(^imageUrslAction)(id imageUrls);
 
 @interface ZQUpPhotoController : BaseViewController
 

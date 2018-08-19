@@ -523,8 +523,19 @@
             ZQUpPhotoController *upVc = [[ZQUpPhotoController alloc] initWithUrls:imageArr];
             [self.navigationController pushViewController:upVc animated:YES];
             __weak typeof(self) weakSelf = self;
-            upVc.imgUrlsAction = ^(NSArray *imageUrls) {
-                weakSelf.contentArray[8] = imageUrls;
+            upVc.imgUrlsAction = ^(id imageUrls) {
+                if ([imageUrls isKindOfClass:[NSArray class]]) {
+                    weakSelf.contentArray[8] = imageUrls;
+                }
+                else
+                {
+                    NSMutableArray *array = [NSMutableArray arrayWithArray:weakSelf.contentArray[8]];
+                    NSString *imageUrl = (NSString *)imageUrls;
+                    if ([array containsObject:imageUrl]) {
+                        [array removeObject:imageUrl];
+                        weakSelf.contentArray[8] = array;
+                    }
+                }
             };
         }
             break;

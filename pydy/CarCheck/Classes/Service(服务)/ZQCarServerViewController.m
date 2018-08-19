@@ -27,7 +27,7 @@
 #import "ZQLoginViewController.h"
 
 //#import "ZQBannerModel.h"
-#import "PBHomeHeadView.h"
+//#import "PBHomeHeadView.h"
 #import "PBHeaderViewCell.h"
 
 #import "UIViewController+MMDrawerController.h"

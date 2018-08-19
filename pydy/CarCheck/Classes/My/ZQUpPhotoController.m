@@ -220,6 +220,9 @@
                     [strongSelf.dataArray removeObjectAtIndex:btn.tag];
                     NSIndexPath *path =  [NSIndexPath indexPathForRow:btn.tag inSection:0];
                     [strongSelf.collectionView deleteItemsAtIndexPaths:@[path]];
+                    if (weakSelf.imgUrlsAction) {
+                        weakSelf.imgUrlsAction(imageUrl);
+                    }
                 }
             }
         } failure:^(NSError *error) {
