@@ -276,20 +276,9 @@
             
             UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [self openCamera];
-                //                UIImagePickerController *pickerVC = [[UIImagePickerController alloc] init];
-                //                pickerVC.delegate = self;
-                //                pickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
-                //                [self.tabBarController presentViewController:pickerVC animated:YES completion:nil];
             }];
             UIAlertAction *albumAction = [UIAlertAction actionWithTitle:@"我的相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [self openPics];
-                //                UIImagePickerController *pickerVC = [[UIImagePickerController alloc] init];
-                //                //想要知道选择的图片
-                //                pickerVC.delegate = self;
-                //                //开启编辑状态
-                //                pickerVC.allowsEditing = YES;
-                //                (void)(pickerVC.videoQuality = UIImagePickerControllerQualityTypeLow),           // 最低的质量,适合通过蜂窝网络传输
-                //                [self presentViewController:pickerVC animated:YES completion:nil];
             }];
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                 
