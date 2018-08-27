@@ -22,7 +22,6 @@
 
 @interface ZQUpVioViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,YBuyingDatePickerDelegate>{
     NSArray        *_titleArray;
-    NSArray        *_placeholderArr;
 }
 
 @property (strong, nonatomic) UITableView          *tableView;
@@ -30,6 +29,7 @@
 @property (strong, nonatomic) ZQChoosePickerView   *pickView;
 @property (copy,   nonatomic) NSString             *sayString;
 @property (strong, nonatomic) NSMutableArray       *contentArray;
+@property (strong, nonatomic) NSMutableArray       *placeholderArr;
 @property (strong, nonatomic) UIImage *chooseImage;
 @end
 
@@ -55,7 +55,7 @@
 }
 -(void)setupData {
     _titleArray = @[@"上传证件照",@"姓名",@"性别",@"生日",@"籍贯",@"从业时间",@"联系电话",@"上传语音",@"上传生活照",@"导游宣言"];
-    _placeholderArr = @[@"未上传",@"请填写用户名",@"请填写性别(男/女)",@"请填写生日(HHHH:MM:DD格式)",@"山西省平遥古城",@"2016年5月",@"请填写联系方式",@"未上传",@"未上传"];
+    _placeholderArr = [NSMutableArray arrayWithArray:@[@"未上传",@"请填写用户名",@"请填写性别(男/女)",@"请填写生日(HHHH:MM:DD格式)",@"山西省平遥古城",@"2016年5月",@"请填写联系方式",@"未上传",@"未上传"]];
     
     
 //        UIImageJPEGRepresentation(_chooseImage, 0.5)
@@ -68,13 +68,13 @@
                 NSString *voice = dic[@"guide_voice"];
                 if ([voice isKindOfClass:[NSString class]]) {
                     if (voice.length) {
-                        _placeholderArr = @[@"未上传",@"请填写用户名",@"请填写性别(男/女)",@"请填写生日(HHHH:MM:DD格式)",@"山西省平遥古城",@"2016年5月",@"请填写联系方式",@"已上传",@"已上传"];
+                        strongSelf.placeholderArr[7] = @"已上传";
                     }
                 }
                 NSArray *lift_img = dic[@"life_img"];
                 if ([lift_img isKindOfClass:[NSArray class]]) {
                     if (lift_img.count) {
-                        _placeholderArr = @[@"未上传",@"请填写用户名",@"请填写性别(男/女)",@"请填写生日(HHHH:MM:DD格式)",@"山西省平遥古城",@"2016年5月",@"请填写联系方式",@"已上传",@"已上传"];
+                        strongSelf.placeholderArr[8] = @"已上传";
                     }
                 }
 //                NSString *sex = dic[@"sex"];
@@ -526,6 +526,10 @@
             upVc.imgUrlsAction = ^(id imageUrls) {
                 if ([imageUrls isKindOfClass:[NSArray class]]) {
                     weakSelf.contentArray[8] = imageUrls;
+                    if ([weakSelf.placeholderArr[0] isEqualToString:@"未上传"]) {
+                        weakSelf.placeholderArr[8] = @"已上传";
+                        [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:8 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
+                    }
                 }
                 else
                 {
@@ -534,6 +538,10 @@
                     if ([array containsObject:imageUrl]) {
                         [array removeObject:imageUrl];
                         weakSelf.contentArray[8] = array;
+                        if (array.count==0) {
+                            weakSelf.placeholderArr[8] = @"未上传";
+                            [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:8 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
+                        }
                     }
                 }
             };
@@ -712,6 +720,10 @@
         __strong typeof(self) strongSelf = weakSelf;
          ZQNewMyViewController *newMyVc = (ZQNewMyViewController *)strongSelf.mm_drawerController.leftDrawerViewController;
         [newMyVc changeAudioUrl:urlStr];
+        if ([strongSelf.placeholderArr[7] isEqualToString:@"未上传"]) {
+            strongSelf.placeholderArr[7] = @"已上传";
+            [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:7 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
+        }
     };
     self.definesPresentationContext = YES;
     test.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.4];

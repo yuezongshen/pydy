@@ -697,6 +697,9 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     else if(self.openSide == MMDrawerSideRight) {
         [self.rightDrawerViewController beginAppearanceTransition:YES animated:animated];
     }
+    if (self.navigationController) {
+        [self.navigationController setNavigationBarHidden:YES animated:animated];
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -720,6 +723,9 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     }
     else if (self.openSide == MMDrawerSideRight) {
         [self.rightDrawerViewController beginAppearanceTransition:NO animated:animated];
+    }
+    if (self.navigationController) {
+        [self.navigationController setNavigationBarHidden:NO animated:animated];
     }
 }
 

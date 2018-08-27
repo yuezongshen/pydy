@@ -108,7 +108,10 @@
         [drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
         [drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
         [drawerController setShouldStretchDrawer:NO];
-        self.window.rootViewController = drawerController;
+//        self.window.rootViewController = drawerController;
+
+    BaseNavigationController *drawerNa = [[BaseNavigationController alloc] initWithRootViewController:drawerController];
+    self.window.rootViewController = drawerNa;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

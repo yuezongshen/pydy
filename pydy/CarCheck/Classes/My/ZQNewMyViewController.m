@@ -258,35 +258,39 @@ static CGFloat kImageOriginHight = 200.f;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    BaseNavigationController* nav = (BaseNavigationController*)self.mm_drawerController.centerViewController;
-    [self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
-        [self.mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
-    }];
+//    BaseNavigationController* nav = (BaseNavigationController*)self.mm_drawerController.centerViewController;
+//    [self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
+//        [self.mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
+//    }];
+    //    BOOL animated = NO;
+
+    BaseNavigationController *nav = (BaseNavigationController*)self.navigationController;
+    BOOL animated = YES;
     switch (indexPath.row) {
         case 0:
         case 1:
         case 2:
             {
                 ZQMyOrderViewController *myOrderVc = [[ZQMyOrderViewController alloc] initWithOrderViewType:(ZQOrderViewType)indexPath.row];
-                [nav pushViewController:myOrderVc animated:NO];
+                [nav pushViewController:myOrderVc animated:animated];
             }
             break;
         case 3:
         {
             ZQValuationController *valuationC = [[ZQValuationController alloc] init];
-            [nav pushViewController:valuationC animated:NO];
+            [nav pushViewController:valuationC animated:animated];
         }
             break;
         case 4:
         {
             ZQUpVioViewController *vioVc = [[ZQUpVioViewController alloc] init];
-            [nav pushViewController:vioVc animated:NO];
+            [nav pushViewController:vioVc animated:animated];
         }
             break;
         case 5:
         {
             ZQMyMoneyViewController *applyVC = [[ZQMyMoneyViewController alloc] init];
-            [nav pushViewController:applyVC animated:NO];
+            [nav pushViewController:applyVC animated:animated];
         }
             break;
         default:

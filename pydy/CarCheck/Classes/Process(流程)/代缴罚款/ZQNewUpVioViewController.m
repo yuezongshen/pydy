@@ -74,7 +74,37 @@
                 __strong typeof(self) strongSelf = weakSelf;
 
                  strongSelf.titleArray = @[@[@"持卡人",@"身份证号"],@[@"选择银行",@"卡号",@"银行预留手机号"],@[@"提现金额（元）",@"￥",[NSString stringWithFormat:@"可提现金额￥%@",strongSelf.maxMoney]]];
-                 strongSelf.contentArray = @[[NSMutableArray arrayWithArray:@[dic[@"dname"],dic[@"dcode"]]],[NSMutableArray arrayWithArray:@[dic[@"kaname"],dic[@"kacode"],dic[@"userpnone"]]],[NSMutableArray arrayWithArray:@[@"",@"",@""]]];
+                NSMutableArray *mutArr1 = [NSMutableArray arrayWithCapacity:2];
+                NSMutableArray *mutArr2 = [NSMutableArray arrayWithCapacity:3];
+                NSString *dname = dic[@"dname"];
+                if (![dname isKindOfClass:[NSString class]]) {
+                    dname = @"";
+                }
+                [mutArr1 addObject:dname];
+                NSString *dcode = dic[@"dcode"];
+                if (![dcode isKindOfClass:[NSString class]]) {
+                    dcode = @"";
+                }
+                [mutArr1 addObject:dcode];
+                
+                NSString *kaname = dic[@"kaname"];
+                if (![kaname isKindOfClass:[NSString class]]) {
+                    kaname = @"";
+                }
+                [mutArr2 addObject:kaname];
+                NSString *kacode = dic[@"kacode"];
+                if (![kacode isKindOfClass:[NSString class]]) {
+                    kacode = @"";
+                }
+                [mutArr2 addObject:kacode];
+                NSString *userpnone = dic[@"userpnone"];
+                if (![userpnone isKindOfClass:[NSString class]]) {
+                    userpnone = @"";
+                }
+                [mutArr2 addObject:userpnone];
+                strongSelf.contentArray = @[mutArr1,mutArr2,[NSMutableArray arrayWithArray:@[@"",@"",@""]]];
+
+//                 strongSelf.contentArray = @[[NSMutableArray arrayWithArray:@[dic[@"dname"],dic[@"dcode"]]],[NSMutableArray arrayWithArray:@[dic[@"kaname"],dic[@"kacode"],dic[@"userpnone"]]],[NSMutableArray arrayWithArray:@[@"",@"",@""]]];
                 [strongSelf.tableView reloadData];
             }
         }
@@ -367,7 +397,9 @@
         strcpy(tempChar,(char *)[tempString UTF8String]);
         
         NSString *bank = [BankCardSearch getBankNameByBin:tempChar count:(int)tempString.length];
-        self.contentArray[textField.tFSecion][textField.tag-1] = bank;
+        if ([bank isKindOfClass:[NSString class]]) {
+            self.contentArray[textField.tFSecion][textField.tag-1] = bank;
+        }
         
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:textField.tag-1 inSection:textField.tFSecion]] withRowAnimation:UITableViewRowAnimationNone];
     }
