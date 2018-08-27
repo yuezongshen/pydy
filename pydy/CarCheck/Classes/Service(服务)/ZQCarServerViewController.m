@@ -493,12 +493,12 @@
     if (_noDataView) {
         [self.noDataView removeFromSuperview];
         self.noDataView = nil;
-        [self.mainView setHidden:NO];
+//        [self.mainView setHidden:NO];
     }
 }
 - (void)noDataShowText:(NSString *)str
 {
-    [self.mainView setHidden:YES];
+//    [self.mainView setHidden:YES];
     [self.view addSubview:self.noDataView];
 //    self.noDataView.noOrderLabel.text = str;
 }
