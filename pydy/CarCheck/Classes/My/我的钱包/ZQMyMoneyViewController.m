@@ -167,7 +167,8 @@
 - (UITableView *)tableView
 {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, KWidth, self.view.bounds.size.height) style:(UITableViewStylePlain)];
+        CGFloat spaceY = (kDevice_Is_iPhoneX ? 88:64);
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, spaceY, KWidth, self.view.bounds.size.height) style:(UITableViewStylePlain)];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.separatorColor = HEXCOLOR(0xeeeeee);

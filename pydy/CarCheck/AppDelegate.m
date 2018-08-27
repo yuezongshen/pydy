@@ -80,7 +80,9 @@
         [self.window.rootViewController presentViewController:loginNa animated:NO completion:NULL];
     }
     [self initJPushService:application WithOption:launchOptions];
-    
+    if (@available(iOS 11, *)) {
+        [UIScrollView appearance].contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }
 //    NSError *setCategoryErr = nil;
 //    NSError *activationErr  = nil;
 //    [[AVAudioSession sharedInstance]

@@ -56,15 +56,17 @@
     [super viewDidLoad];
     self.title = @"我的订单";
     _page = 1;
-    [self.view addSubview:self.tableView];
-  
-    [self addSegment];
+   
+    
     [self segmentAction:_currentViewType];
     
+    [self.view addSubview:self.tableView];
     __weak __typeof(self) weakSelf = self;
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [weakSelf segmentAction:weakSelf.currentViewType];
     }];
+    
+    [self addSegment];
 }
 
 - (void)requestOrdersDataWithTableViewType
@@ -503,6 +505,7 @@
 - (UITableView *)tableView
 {
     if (!_tableView) {
+        NSLog(@"00000did%@",self.view);
         CGFloat spaceY = (kDevice_Is_iPhoneX ? 88:64);
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,spaceY+36, KWidth, CGRectGetHeight(self.view.frame)-spaceY-36) style:(UITableViewStylePlain)];
         _tableView.delegate = self;
@@ -512,6 +515,11 @@
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     return _tableView;
+}
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    NSLog(@"11111did%@",self.view);
 }
 - (ZQNoDataView *)noDataView
 {

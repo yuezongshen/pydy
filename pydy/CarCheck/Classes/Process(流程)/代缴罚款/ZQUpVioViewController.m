@@ -106,8 +106,8 @@
 }
 
 -(void)initViews {
-    
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, KWidth, self.view.bounds.size.height) style:(UITableViewStyleGrouped)];
+    CGFloat spaceY = (kDevice_Is_iPhoneX ? 88:64);
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, spaceY, KWidth, self.view.bounds.size.height) style:(UITableViewStyleGrouped)];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
