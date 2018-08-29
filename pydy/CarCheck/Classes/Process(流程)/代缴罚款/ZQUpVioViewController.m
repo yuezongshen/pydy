@@ -526,9 +526,9 @@
             upVc.imgUrlsAction = ^(id imageUrls) {
                 if ([imageUrls isKindOfClass:[NSArray class]]) {
                     weakSelf.contentArray[8] = imageUrls;
-                    if ([weakSelf.placeholderArr[0] isEqualToString:@"未上传"]) {
+                    if ([weakSelf.placeholderArr[8] isEqualToString:@"未上传"]) {
                         weakSelf.placeholderArr[8] = @"已上传";
-                        [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:8 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
+                        [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                     }
                 }
                 else
@@ -540,7 +540,7 @@
                         weakSelf.contentArray[8] = array;
                         if (array.count==0) {
                             weakSelf.placeholderArr[8] = @"未上传";
-                            [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:8 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
+                            [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                         }
                     }
                 }
@@ -722,7 +722,7 @@
         [newMyVc changeAudioUrl:urlStr];
         if ([strongSelf.placeholderArr[7] isEqualToString:@"未上传"]) {
             strongSelf.placeholderArr[7] = @"已上传";
-            [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:7 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
+            [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         }
     };
     self.definesPresentationContext = YES;
